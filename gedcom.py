@@ -7,7 +7,7 @@
 #########################################################################################################################
 
 # Encoding must be added to remove the beginning and ending file tags. 
-gedcom_file = open('GEDCOM-Jack-Harrington.ged', 'r', encoding='utf-8-sig')
+gedcom_file = open('GEDCOM-raw-data.ged', 'r', encoding='utf-8-sig')
 
 # Loops through all lines in gedcom_file.
 while True:
