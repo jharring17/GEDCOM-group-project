@@ -1,7 +1,7 @@
 from datetime import *
 from dateutil import parser
 
-filename = "newfam.ged"
+filename = "./data/newfam.ged"
 
 individual = [[0 for j in range(9)] for i in range(35)]
 family = [[0 for j in range(8)] for i in range(10)]
@@ -214,10 +214,6 @@ with open(filename, "r") as gedcomFile:
         if a[8] != "NA":
             family[count][0] = a[8]
 
-
-
-
-
     for r in individual:
         for e in r:
             if e == 0:
@@ -233,26 +229,6 @@ with open(filename, "r") as gedcomFile:
             else:          
                 print(elem, end=' ')
         print()
-
-
-#######################################################
-# Functions to validate GEDCOM data.
-
-# Validates if birth comes before death.
-def birthBeforeDeath(birth, death):
-    birth_date = parser.parse(birth) 
-    death_date = parser.parse(death)
-    if (death_date < birth_date):
-        print("Error: cannot have death_date before birth_date.")
-    
-print(birthBeforeDeath(individual[10][3], '2 JUN 1966'))
-
-
-#birthBeforeDeath(individual[1][3])
-
-
-
-
 
 
 
