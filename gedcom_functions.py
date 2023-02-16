@@ -7,7 +7,6 @@ def birthBeforeDeath(birth, death):
     if (death_date < birth_date):
         # If death before birth.
         return False
-    else {
+    else:
         #If death after birth.
         return True
-    }
