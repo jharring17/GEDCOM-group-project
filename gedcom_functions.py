@@ -12,6 +12,25 @@ def birthBeforeDeath(birth, death):
     else:
         # If death after birth.
         return True
+
+# Validates that a person was born before they were married.
+def birthBeforeMarriage(family, individual):
+    partnerOneID = family[3]
+    partnerTwoID = family[5]
+    individualID = individual[0]
+    # Preforms check to see if family member is spouse.
+    if ((partnerOneID == individualID) or (partnerTwoID == individualID)):
+        # Parses birth_date and marriage_date.
+        marriage_date = parser.parse(family[1])
+        birth_date = parser.parse(individual[3])
+        # Checks that marriage_date occurs after birth_date.
+        if (marriage_date > birth_date):
+            return True
+        else:
+            return False
+    else:
+        return 'Error: Individual provided not in family.'
+
 # Lists all orphaned children when passed
 # a list of children (under 18).
 def listOrphans(children):
@@ -28,6 +47,7 @@ def listOrphans(children):
             #Append to orphan list
             orphans += children[i]
     return orphans
+
 # List all couples who were married when the older spouse was
 # more than twice as old as the younger spouse
 def listLargeAgeDifferences(couples):
