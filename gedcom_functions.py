@@ -3,8 +3,6 @@ from datetime import *
 from dateutil import parser
 
 # Validates if birth comes before death.
-
-
 def birthBeforeDeath(birth, death):
     birth_date = parser.parse(birth)
     death_date = parser.parse(death)
