@@ -1,5 +1,4 @@
-from datetime import *
-from dateutil import parser
+# File that parses GEDCOM files.
 
 filename = "./data/newfam.ged"
 
