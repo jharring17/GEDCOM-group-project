@@ -1,1 +1,0 @@
-child_id = line.split('CHIL')[1].strip()
