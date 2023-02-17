@@ -91,7 +91,7 @@ def marriageBeforeDivorce(family, individual):
         return 'Error: Individual provided not in family.'
 
 
-# Vali
+# Validates that a person was married before their death. 
 def marriageBeforeDeath(family, individual):
     partnerOneID = family[3]
     partnerTwoID = family[5]
