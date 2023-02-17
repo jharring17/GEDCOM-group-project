@@ -33,7 +33,7 @@ class testGEDCOM(unittest.TestCase):
     # Should return an empty list.
     def test1_listOrphans(self):
         result = gedcom_functions.listOrphans([])
-        self.assertEqual(result)
+        self.assertEqual([], result)
 
         # Should return...
     def test2_listOrphans(self):

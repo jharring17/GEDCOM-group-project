@@ -33,34 +33,29 @@ def birthBeforeMarriage(family, individual):
 
 # Lists all orphaned children when passed
 # a list of children (under 18).
-def listOrphans(children):
+def listOrphans(ind_matrix, fam_matrix):
     orphans = []
-    for i in children: 
-        age = parser.parse(children[i].age)
-        #Child is not orphan if greater than 17 years of age
-        if (age > 17):
-            continue
-        else:
-            #Check if both parents are dead
-            if (((children[i].parent1.dead) and (children[i].parent2.dead)) != True):
-                continue
-            #Append to orphan list
-            orphans += children[i]
+    for row in ind_matrix:
+        if row[4] >= 17:
+            for row in fam_matrix:
+                if row[6] != "NA":
+                    orphans.append(row[1]);
     return orphans
 
 # List all couples who were married when the older spouse was
 # more than twice as old as the younger spouse
-def listLargeAgeDifferences(couples):
-    ageDiff = []
-    for i in couples: 
-        # Use marriage date - birth date to figure out ages of the spouses
-        # For simplicity use marriage year and birth year
-        marriage = parser.parse(couples[i].marriageDate)
-        spouse1_birth = parser.parse(couples[i].spouse1.birth)
-        spouse2_birth = parser.parse(couples[i].spouse.birth)
-        # AAM = Age at Marriage
-        spouse1_AAM = marriage - spouse1_birth
-        spouse2_AAM = marriage - spouse2_birth
+def listLargeAgeDifferences(ind_matrix, fam_matrix):
+    agediff = []
+    for row in ind_matrix:
+        if row[8] != "NA":
+            partner_age = row[4]
+            for i in fam_matrix:
+                if row[8] != "NA":
+                    if partner_age > 2 * row[4] or row[4] > 2 * partner_age:
+                        agediff.append(row[1]);
+    return agediff
+
+        
 
 # Lists all deceased individuals
 def listDeceased(ind_matrix):
