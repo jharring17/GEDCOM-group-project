@@ -1,6 +1,7 @@
 # File that parses GEDCOM files.
 
 from tabulate import tabulate
+from gedcom_functions import *
 
 filename = "./data/newfam.ged"
 
