@@ -226,7 +226,17 @@ with open(filename, "r") as gedcomFile:
 
     print(tabulate(family, headers=famheaders, tablefmt='fancy_grid'))
 
+##############################################################
+# Tests the functions with the data.
+print("Testing functions on the data: \n") 
 
+# Checks that each of the individuals who are dead were living first.
+for i in individual:
+    if (i[6] == 'NA' or i[6] == 0):
+        pass
+    else:
+        print(i[1] + " was born and then died: ")
+        print(birthBeforeDeath(i[3], i[6]))
 
 
 
