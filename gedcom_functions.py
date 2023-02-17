@@ -73,6 +73,38 @@ def listLivingSingle(ind_matrix, fam_matrix):
             single.append(row[1]);
     return single
 
+# Validates that a person was married before divorce
+def marriageBeforeDivorce(family, individual):
+    partnerOneID = family[3]
+    partnerTwoID = family[5]
+    individualID = individual[0]
+    if ((partnerOneID == individualID) or (partnerTwoID == individualID)):
+        if (family[2]) != "NA":
+            marriage_date = parser.parse(family[1])
+            divorce_date = parser.parse(family[2])
+            if (marriage_date < divorce_date):
+                return True
+            else:
+                return False
+        else: return True
+    else:
+        return 'Error: Individual provided not in family.'
+
+
+# Vali
+def marriageBeforeDeath(family, individual):
+    partnerOneID = family[3]
+    partnerTwoID = family[5]
+    individualID = individual[0]
+    if ((partnerOneID == individualID) or (partnerTwoID == individualID)):
+        marriage_date = parser.parse(family[1])
+        death_date = parser.parse(individual[6])
+        if (marriage_date < death_date):
+            return True
+        else:
+            return False
+    else:
+        return 'Error: Individual provided not in family.'
 
 
 
