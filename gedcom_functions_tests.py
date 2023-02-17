@@ -104,6 +104,58 @@ class testGEDCOM(unittest.TestCase):
     def test5_listLargeAgeDifferences(self):
         result = gedcom_functions.listLargeAgeDifferences([])
         self.assertEqual(result)
+        
+        
+        # Should evaluate to True.
+    def test1_marriageBeforeDivorce(self):
+        result = gedcom_functions.marriageBeforeDivorce(["@F2@", "5 JUL 1945", "NA", "@I6@",  "Arthur /Meumann/", "@I7@", "Lori /Meumann/",['@I2@', '@I8@']], ["@I6@", "Arthur /Meumann/", "M", "6 DEC 1922", "101", "False", "3 JAN 1999", "NA", "@F5@"])
+        self.assertTrue(result)
+
+        # Should evaluate to False.
+    def test2_marriageBeforeDivorce(self):
+        result = gedcom_functions.marriageBeforeDivorce(["@F2@", "5 JUL 1945", "5 JUL 1945", "@I6@",  "Arthur /Meumann/", "@I7@", "Lori /Meumann/",['@I2@', '@I8@']], ["@I6@", "Arthur /Meumann/", "M", "6 DEC 1922", "101", "False", "3 JAN 1999", "NA", "@F5@"])
+        self.assertFalse(result)
+        
+    # Should evaluate to True.
+    def test3_marriageBeforeDivorce(self):
+        result = gedcom_functions.marriageBeforeDivorce(["@F2@", "5 JUL 1945", "5 JUL 1946", "@I6@",  "Arthur /Meumann/", "@I7@", "Lori /Meumann/",['@I2@', '@I8@']], ["@I6@", "Arthur /Meumann/", "M", "6 DEC 1922", "101", "False", "3 JAN 1999", "NA", "@F5@"])
+        self.assertTrue(result)
+
+        # Should evaluate to False.
+    def test4_marriageBeforeDivorce(self):
+        result = gedcom_functions.marriageBeforeDivorce(["@F2@", "5 JUL 1945", "5 JUL 1944", "@I6@",  "Arthur /Meumann/", "@I7@", "Lori /Meumann/",['@I2@', '@I8@']], ["@I6@", "Arthur /Meumann/", "M", "6 DEC 1922", "101", "False", "3 JAN 1999", "NA", "@F5@"])
+        self.assertFalse(result)
+
+        # Should evaluate to True.
+    def test5_marriageBeforeDivorce(self):
+        result = gedcom_functions.marriageBeforeDivorce(["@F2@", "5 JUL 1945", "5 JUL 2000", "@I6@",  "Arthur /Meumann/", "@I7@", "Lori /Meumann/",['@I2@', '@I8@']], ["@I6@", "Arthur /Meumann/", "M", "6 DEC 1922", "101", "False", "3 JAN 1999", "NA", "@F5@"])
+        self.assertTrue(result)
+
+        # Should evaluate to True.
+    def test1_marriageBeforeDeath(self):
+        result = gedcom_functions.marriageBeforeDeath(["@F2@", "5 JUL 1945", "NA", "@I6@",  "Arthur /Meumann/", "@I7@", "Lori /Meumann/",['@I2@', '@I8@']], ["@I6@", "Arthur /Meumann/", "M", "6 DEC 1922", "101", "False", "3 JAN 1999", "NA", "@F5@"])
+        self.assertTrue(result)
+
+        # Should evaluate to True.
+    def test2_marriageBeforeDeath(self):
+        result = gedcom_functions.marriageBeforeDeath(["@F2@", "5 JUL 1946", "NA", "@I6@",  "Arthur /Meumann/", "@I7@", "Lori /Meumann/",['@I2@', '@I8@']], ["@I6@", "Arthur /Meumann/", "M", "6 DEC 1922", "101", "False", "3 JAN 1999", "NA", "@F5@"])
+        self.assertTrue(result)
+
+        # Should evaluate to False.
+    def test3_marriageBeforeDeath(self):
+        result = gedcom_functions.marriageBeforeDeath(["@F2@", "5 JUL 2000", "NA", "@I6@",  "Arthur /Meumann/", "@I7@", "Lori /Meumann/",['@I2@', '@I8@']], ["@I6@", "Arthur /Meumann/", "M", "6 DEC 1922", "101", "False", "3 JAN 1999", "NA", "@F5@"])
+        self.assertFalse(result)
+
+        # Should evaluate to False.
+    def test4_marriageBeforeDeath(self):
+        result = gedcom_functions.marriageBeforeDeath(["@F2@", "5 JUL 2001", "NA", "@I6@",  "Arthur /Meumann/", "@I7@", "Lori /Meumann/",['@I2@', '@I8@']], ["@I6@", "Arthur /Meumann/", "M", "6 DEC 1922", "101", "False", "3 JAN 1999", "NA", "@F5@"])
+        self.assertFalse(result)
+
+        # Should evaluate to False.
+    def test5_marriageBeforeDeath(self):
+        result = gedcom_functions.marriageBeforeDeath(["@F2@", "5 JUL 2002", "NA", "@I6@",  "Arthur /Meumann/", "@I7@", "Lori /Meumann/",['@I2@', '@I8@']], ["@I6@", "Arthur /Meumann/", "M", "6 DEC 1922", "101", "False", "3 JAN 1999", "NA", "@F5@"])
+        self.assertFalse(result)
+  
 
 # Enables us to call test file like python file.
 if __name__ == '__main__':
