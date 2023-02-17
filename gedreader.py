@@ -1,5 +1,7 @@
 # File that parses GEDCOM files.
 
+from tabulate import tabulate
+
 filename = "./data/newfam.ged"
 
 individual = [[0 for j in range(9)] for i in range(35)]
@@ -11,6 +13,8 @@ dead = False
 marriage = 1 #1 false, 2 true, 3 divorced
 
 with open(filename, "r") as gedcomFile:
+
+    #grabbing all of our data
     for myline in gedcomFile:
         line = myline.strip('\n')
         level = line[0]
@@ -55,9 +59,7 @@ with open(filename, "r") as gedcomFile:
             valid = 'N'
 
 
-##################################new
-
-        
+##################################checking individual data
 
         if level == "0" and tag in taglist4:
             row += 1
@@ -100,7 +102,7 @@ with open(filename, "r") as gedcomFile:
             individual[row][7] = arg
 
 
-        #######fam stuff
+        #######fam data stuff
         elif tag == "FAM":
             famrow += 1
             family[famrow][0] = arg
@@ -121,12 +123,11 @@ with open(filename, "r") as gedcomFile:
                     family[famrow][6] = c[1]
 
         elif tag == "CHIL":
-            arglist = []
-            arglist.append(family[famrow][7])
-            arglist.append(arg)
-
-            family[famrow][7] = []
-            family[famrow][7] = arglist
+            arglist = [arg]
+            if type(family[famrow][7]) is list:
+                family[famrow][7].append(arg)
+            else:
+                family[famrow][7] = arglist
                                
         elif tag == "DIV":
             marriage = 3
@@ -213,21 +214,17 @@ with open(filename, "r") as gedcomFile:
         if a[8] != "NA":
             family[count][0] = a[8]
 
-    for r in individual:
-        for e in r:
-            if e == 0:
-                break
-            else:          
-                print(e, end=' ')
-        print()
+    #print individual data
+    indvheaders = ['ID', 'NAME', 'GENDER', 'BIRTHDAY', 'AGE', 'ALIVE', 'DEATH', 'CHILD', 'SPOUSE']
+    indtable = [indvheaders] + individual
 
-    for rower in family:
-        for elem in rower:
-            if elem == 0:
-                break
-            else:          
-                print(elem, end=' ')
-        print()
+    print(tabulate(individual, headers=indvheaders, tablefmt='fancy_grid'))
+
+    #print family data
+    famheaders = ['ID', 'MARRIED', 'DIVORCED', 'HUSBAND ID', 'HUSBAND NAME', 'WIFE ID', 'WIFE NAME', 'CHILDREN']
+    famtable = [famheaders] + family
+
+    print(tabulate(family, headers=famheaders, tablefmt='fancy_grid'))
 
 
 

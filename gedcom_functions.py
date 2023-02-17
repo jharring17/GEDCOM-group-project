@@ -62,5 +62,24 @@ def listLargeAgeDifferences(couples):
         spouse1_AAM = marriage - spouse1_birth
         spouse2_AAM = marriage - spouse2_birth
 
+# Lists all deceased individuals
+def listDeceased(ind_matrix):
+    deceased = []
+    for row in ind_matrix:
+        if row[6] != "NA":
+            deceased.append(row[1])
+    return deceased
+
+# Lists all people over 30 who have never been married
+def listLivingSingle(ind_matrix, fam_matrix):
+    single = []
+    for row in ind_matrix:
+        if row[4] >= 30 and row[8] == "NA":
+            single.append(row[1]);
+    return single
+
+
+
+
 
          
