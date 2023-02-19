@@ -5,8 +5,9 @@ from gedcom_functions import *
 
 filename = "./data/newfam.ged"
 
-individual = [[0 for j in range(9)] for i in range(35)]
-family = [[0 for j in range(8)] for i in range(10)]
+#TODO: Change this from static matrix to expanding.
+individual = [[0 for j in range(9)] for i in range(34)]
+family = [[0 for j in range(8)] for i in range(9)]
 
 row = -1
 famrow = -1
@@ -208,6 +209,11 @@ with open(filename, "r") as gedcomFile:
         rownum += 1
 
 #############################################################
+    counter = 0
+    for person in individual:
+        if (person[0] != 0):
+            counter +=1
+    individual = individual[:counter]
 
     #fam stuff:
     count = 0
@@ -229,20 +235,36 @@ with open(filename, "r") as gedcomFile:
 
 ##############################################################
 # Tests the functions with the data.
-print("Testing functions on the data: \n") 
+print("\nTesting functions on the data: ") 
 
 # Checks that each of the individuals who are dead were living first.
 for i in individual:
     if (i[6] == 'NA' or i[6] == 0):
         pass
     else:
-        print(i[1] + " was born and then died: ")
-        print(birthBeforeDeath(i[3], i[6]))
+        result = birthBeforeDeath(i[3], i[6])
+        result = str(result)
+        print(i[1] + " was born and then died: " + result)
 
+# Checks that married individuals were born before they were married.
+for i in individual:
+    for f in family:
+        if (birthBeforeMarriage(i, f) == None or birthBeforeMarriage(i, f) == 'Error: Individual provided not in family.'):
+            pass
+        else:
+            print(birthBeforeMarriage(i, f))
 
+if (listLargeAgeDifferences(individual, family) == []):
+    print("There are no large age differences in the dataset.")
+else:
+    print(listLargeAgeDifferences(individual, family))
 
-
-
+livingSingle = []
+for person in individual:
+    if person[8] == 'NA':
+        livingSingle.append(person[1])
+print(livingSingle)
+print(listDeceased(individual))
 
 
 

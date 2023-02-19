@@ -35,11 +35,28 @@ def birthBeforeMarriage(family, individual):
 # a list of children (under 18).
 def listOrphans(ind_matrix, fam_matrix):
     orphans = []
+    dad = 0
+    mom = 0
+    mom_dead = False
+    dad_dead = False
     for row in ind_matrix:
-        if row[4] >= 17:
-            for row in fam_matrix:
-                if row[6] != "NA":
-                    orphans.append(row[1]);
+        if row[4] < 18:
+            fam_id = str(row[7])
+            for r in fam_matrix:
+                if fam_id == r[0]:
+                    dad = r[3]
+                    mom = r[5]
+                    dad_dead = False
+                    mom_dead = False
+            for rower in ind_matrix:
+                if rower[0] == dad:
+                    if rower[5] == False:
+                        dad_dead = True
+                elif rower[0] == mom:
+                    if rower[5] == False:
+                        mom_dead = True
+            if mom_dead == True and dad_dead == True:
+                orphans.append(row[1]);
     return orphans
 
 # List all couples who were married when the older spouse was
