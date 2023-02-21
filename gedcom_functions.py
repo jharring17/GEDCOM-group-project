@@ -61,15 +61,31 @@ def listOrphans(ind_matrix, fam_matrix):
 
 # List all couples who were married when the older spouse was
 # more than twice as old as the younger spouse
+# married
+# older spouse more than twice as old as younger spouse at marriage
 def listLargeAgeDifferences(ind_matrix, fam_matrix):
     agediff = []
-    for row in ind_matrix:
-        if row[8] != "NA":
-            partner_age = row[4]
-            for i in fam_matrix:
-                if row[8] != "NA":
-                    if partner_age > 2 * row[4] or row[4] > 2 * partner_age:
-                        agediff.append(row[1]);
+    for row in fam_matrix:
+        hus_birt = ''
+        wife_birt = ''
+        marry_date = row[1]
+        hus_name = row[4]
+        wife_name = row[6]
+
+        for rower in ind_matrix:
+            if wife_name == rower[1]:
+                wife_birt = datetime.strptime(rower[3], '%d %b %Y')
+            elif hus_name == rower[1]:
+                hus_birt = datetime.strptime(rower[3], '%d %b %Y')
+
+        if hus_birt != '' and wife_birt != '':
+            marry_date_good = datetime.strptime(marry_date, '%d %b %Y')
+            hus_age = (marry_date_good - hus_birt).days // 365
+            wife_age = (marry_date_good - wife_birt).days // 365
+            
+            if hus_age > (wife_age * 2) or wife_age > (hus_age * 2):
+                agediff.append(row[0])
+                
     return agediff
         
 # Lists all deceased individuals
