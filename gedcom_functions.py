@@ -80,12 +80,20 @@ def listDeceased(ind_matrix):
             deceased.append(row[1])
     return deceased
 
-# Lists all people over 30 who have never been married
+# Lists all people who: 
+    # living
+    # over 30
+    # never married
 def listLivingSingle(ind_matrix, fam_matrix):
     single = []
+    there = False
     for row in ind_matrix:
-        if row[4] >= 30 and row[8] == "NA":
-            single.append(row[1]);
+        if row[4] >= 30 and row[5] == True:
+            for r in fam_matrix:
+                if r[4] == row[1] or r[6] == row[1]:
+                    there = True
+            if there == False:
+                single.append(row[1])
     return single
 
 # Validates that a person was married before divorce
