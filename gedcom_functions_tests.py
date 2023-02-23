@@ -581,6 +581,46 @@ class testGEDCOM(unittest.TestCase):
         result = gedcom_functions.marriageBeforeDeath(["@F2@", "5 JUL 2002", "NA", "@I6@",  "Arthur /Meumann/", "@I7@", "Lori /Meumann/",['@I2@', '@I8@']], ["@I6@", "Arthur /Meumann/", "M", "6 DEC 1922", "101", "False", "3 JAN 1999", "NA", "@F5@"])
         self.assertFalse(result)  
 
+    def test1_olderThan150(self):
+        individuals = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 36, True, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 151, True, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Mary Brown', 'Female', '17 Oct 1977', 44, True, 'NA', 'NA', '@F1@'],
+        ['@I5@', 'David Lee', 'Male', '29 Apr 1998', 23, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Samantha Kim', 'Female', '12 Jul 2001', 22, True, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'Mike Johnson', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Karen Lee', 'Female', '06 Feb 1975', 70, False, '12 Dec 2021', '@F3@', '@F5@'],
+        ['@I9@', 'Eric Chang', 'Male', '27 Nov 1989', 32, True, 'NA', '@F5@', 'NA'],
+        ['@I10@', 'Stephanie Wong', 'Female', '20 May 1995', 26, True, 'NA', 'NA', '@F2@']]
+        result = gedcom_functions.olderThan150(individuals)
+        self.assertEqual(result, "Error: Bob Johnson should not be listed as alive.")
+
+    def test2_olderThan150(self):
+        individuals = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 36, True, 'NA', '@F5@', 'NA'],
+        ['@I10@', 'Stephanie Wong', 'Female', '20 May 1995', 26, True, 'NA', 'NA', '@F2@']]
+        result = gedcom_functions.olderThan150(individuals)
+        self.assertEqual(result, None)
+
+    def test3_olderThan150(self):
+        individuals = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 36, True, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 78, True, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Mary Brown', 'Female', '17 Oct 1977', 160, True, 'NA', 'NA', '@F1@']]
+        result = gedcom_functions.olderThan150(individuals)
+        self.assertEqual(result, "Error: Mary Brown should not be listed as alive.")
+
+    def test4_olderThan150(self):
+        individuals = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 36, True, 'NA', '@F5@', 'NA']]
+        result = gedcom_functions.olderThan150(individuals)
+        self.assertEqual(result, None)
+
+    def test5_olderThan150(self):
+        individuals = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 36, True, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 151, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Mary Brown', 'Female', '17 Oct 1977', 44, True, 'NA', 'NA', '@F1@']]
+        result = gedcom_functions.olderThan150(individuals)
+        self.assertEqual(result, None)
 
 # Enables us to call test file like python file.
 if __name__ == '__main__':

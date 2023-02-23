@@ -265,7 +265,7 @@ for person in individual:
         livingSingle.append(person[1])
 print(livingSingle)
 print(listDeceased(individual))
-
+print(olderThan150(individual))
 
 
 

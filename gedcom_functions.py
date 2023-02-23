@@ -2,6 +2,7 @@
 from datetime import *
 from dateutil import parser
 
+#TODO: Replace input with a matrix.
 # Validates if birth comes before death.
 def birthBeforeDeath(birth, death):
     birth_date = parser.parse(birth)
@@ -120,3 +121,11 @@ def marriageBeforeDeath(family, individual):
     else:
         return 'Error: Individual provided not in family.'
          
+# Checks if anyone has an age of over 150yrs and is alive.
+def olderThan150(individuals):
+    # Iterates the individuals.
+    for row in individuals:
+        # Checks if their age attribute is > 150.
+        person = row[1]
+        if row[4] > 150 and row[5] == True:
+            return("Error: " + person + " should not be listed as alive.")
