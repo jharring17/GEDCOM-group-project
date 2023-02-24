@@ -112,6 +112,16 @@ def listLivingSingle(ind_matrix, fam_matrix):
                 single.append(row[1])
     return single
 
+def listLivingMarried(ind_matrix, fam_matrix):
+    married = []
+    for row in fam_matrix:
+        if row[2] == 'NA':
+            for r in ind_matrix:
+                if row[4] == r[1] or row[6] == r[1]:
+                    if r[5] == True:
+                        married.append(r[1])
+    return married
+
 # Validates that a person was married before divorce
 def marriageBeforeDivorce(family, individual):
     partnerOneID = family[3]
