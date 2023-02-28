@@ -215,11 +215,16 @@ with open(filename, "r") as gedcomFile:
             counter +=1
     individual = individual[:counter]
 
-    #fam stuff:
-    count = 0
-    for a in individual:
-        if a[8] != "NA":
-            family[count][0] = a[8]
+
+
+    # #fam stuff DELETE THIS
+    # count = 0
+    # for a in individual:
+    #     if a[8] != "NA":
+    #         family[count][0] = a[8]
+
+
+            
 
     #print individual data
     indvheaders = ['ID', 'NAME', 'GENDER', 'BIRTHDAY', 'AGE', 'ALIVE', 'DEATH', 'CHILD', 'SPOUSE']
