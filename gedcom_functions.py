@@ -144,3 +144,17 @@ def marriageBeforeDeath(family, individual):
     else:
         return 'Error: Individual provided not in family.'
          
+# Lists all people who: 
+    # living
+    # married
+def listLivingMarried(ind_matrix, fam_matrix):
+    alive_married = []
+    there = False
+    for row in ind_matrix:
+        if row[5] == True:
+            for r in fam_matrix:
+                if r[4] == row[1] or r[6] == row[1]:
+                    there = True
+            if there == False:
+                alive_married.append(row[1])
+    return alive_married
