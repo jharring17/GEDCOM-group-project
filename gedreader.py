@@ -215,11 +215,11 @@ with open(filename, "r") as gedcomFile:
             counter +=1
     individual = individual[:counter]
 
-    #fam stuff:
-    count = 0
-    for a in individual:
-        if a[8] != "NA":
-            family[count][0] = a[8]
+# fam table - replace 0's with NAs
+    for i in range(len(family)):
+        for j in range(len(family[i])):
+            if family[i][j] == 0:
+                family[i][j] = "NA"
 
     #print individual data
     indvheaders = ['ID', 'NAME', 'GENDER', 'BIRTHDAY', 'AGE', 'ALIVE', 'DEATH', 'CHILD', 'SPOUSE']
@@ -238,21 +238,10 @@ with open(filename, "r") as gedcomFile:
 print("\nTesting functions on the data: ") 
 
 # Checks that each of the individuals who are dead were living first.
-for i in individual:
-    if (i[6] == 'NA' or i[6] == 0):
-        pass
-    else:
-        result = birthBeforeDeath(i[3], i[6])
-        result = str(result)
-        print(i[1] + " was born and then died: " + result)
+print(birthBeforeDeath(individual))
 
 # Checks that married individuals were born before they were married.
-for i in individual:
-    for f in family:
-        if (birthBeforeMarriage(i, f) == None or birthBeforeMarriage(i, f) == 'Error: Individual provided not in family.'):
-            pass
-        else:
-            print(birthBeforeMarriage(i, f))
+print(birthBeforeMarriage(family, individual))
 
 if (listLargeAgeDifferences(individual, family) == []):
     print("There are no large age differences in the dataset.")
@@ -265,7 +254,8 @@ for person in individual:
         livingSingle.append(person[1])
 print(livingSingle)
 print(listDeceased(individual))
-
+print(listLivingMarried(individual, family))
+print(noMarDes(individual, family))
 
 
 

@@ -3,33 +3,32 @@ from datetime import *
 from dateutil import parser
 
 # Validates if birth comes before death.
-def birthBeforeDeath(birth, death):
-    birth_date = parser.parse(birth)
-    death_date = parser.parse(death)
-    if (death_date < birth_date):
-        # If death before birth.
-        return False
-    else:
-        # If death after birth.
-        return True
+def birthBeforeDeath(individuals):
+    result_array = []
+    for row in individuals:
+        if (row[6] == 'NA'):
+            pass
+        else:
+            individual = row[1]
+            birth_date = parser.parse(row[3])
+            death_date = parser.parse(row[6]) 
+            if (death_date < birth_date):
+                result_array.append("Error: " + individual + " died before they were born.")
+    return result_array
 
 # Validates that a person was born before they were married.
 def birthBeforeMarriage(family, individual):
-    partnerOneID = family[3]
-    partnerTwoID = family[5]
-    individualID = individual[0]
-    # Preforms check to see if family member is spouse.
-    if ((partnerOneID == individualID) or (partnerTwoID == individualID)):
-        # Parses birth_date and marriage_date.
-        marriage_date = parser.parse(family[1])
-        birth_date = parser.parse(individual[3])
-        # Checks that marriage_date occurs after birth_date.
-        if (marriage_date > birth_date):
-            return True
-        else:
-            return False
-    else:
-        return 'Error: Individual provided not in family.'
+    result_array = []
+    for i in individual:
+        individual_id = i[0]
+        individual_name = i[1]
+        individual_birth = parser.parse(i[3])
+        for j in family:
+            if individual_id == j[3] or individual_id == j[5]:
+                marriage_date = parser.parse(j[1])
+                if individual_birth > marriage_date:
+                    result_array.append("Error: " + individual_name + " was married before they were born.")
+    return result_array
 
 # Lists all orphaned children when passed
 # a list of children (under 18).
@@ -96,10 +95,7 @@ def listDeceased(ind_matrix):
             deceased.append(row[1])
     return deceased
 
-# Lists all people who: 
-    # living
-    # over 30
-    # never married
+# Lists all people over 30 who have never been married
 def listLivingSingle(ind_matrix, fam_matrix):
     single = []
     there = False
@@ -111,6 +107,53 @@ def listLivingSingle(ind_matrix, fam_matrix):
             if there == False:
                 single.append(row[1])
     return single
+
+def noMarDes(ind_matrix, fam_matrix):
+    for row in fam_matrix:
+        husband = row[3]
+        wife = row[5]
+        if row[7] != 'NA':
+            children = row[7]
+            des = listDes(ind_matrix, fam_matrix, children)
+            for person in des:
+                for r in fam_matrix:
+                    if (r[3] == husband and r[5] == person) or (r[3] == person and r[5] == wife):
+                        return False
+    return True
+    
+#lists all living and married (does not include divorced)
+def listLivingMarried(ind_matrix, fam_matrix):
+    married = []
+    for row in fam_matrix:
+        if row[2] == 'NA':
+            for r in ind_matrix:
+                if row[4] == r[1] or row[6] == r[1]:
+                    if r[5] == True:
+                        married.append(r[1])
+    return married
+
+# noMarDes helper function
+# lists descendants of a parent
+def listDes(ind_matrix, fam_matrix, childList):
+    des = childList
+
+    for child in childList:
+        for rower in fam_matrix:
+            if (child == rower[3] or child == rower[5]) and rower[7] != 'NA':
+                children = rower[7]
+                des.append(listDes(ind_matrix, fam_matrix, children))
+                des = flatten(des)
+    return des
+
+# flattens list [hi, hello, [here]] -> [hi, hello, here]
+def flatten(lis):
+    res = []
+    for item in lis:
+        if isinstance(item, list):
+            res.extend(flatten(item))
+        else:
+            res.append(item)
+    return res
 
 # Validates that a person was married before divorce
 def marriageBeforeDivorce(family, individual):
@@ -144,3 +187,12 @@ def marriageBeforeDeath(family, individual):
     else:
         return 'Error: Individual provided not in family.'
          
+# Checks if anyone has an age of over 150yrs and is alive.
+def olderThan150(individuals):
+    result_array = []
+    # Iterates the individuals.
+    for row in individuals:
+        # Checks if their age attribute is > 150.
+        person = row[1]
+        if row[4] > 150 and row[5] == True:
+            return("Error: " + person + " should not be listed as alive.")
