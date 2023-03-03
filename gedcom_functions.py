@@ -143,18 +143,34 @@ def marriageBeforeDeath(family, individual):
             return False
     else:
         return 'Error: Individual provided not in family.'
-         
-# Lists all people who: 
-    # living
-    # married
-def listLivingMarried(ind_matrix, fam_matrix):
-    alive_married = []
-    there = False
+
+# List all living spouses and descendants of
+# people in a GEDCOM file who died in the last 30 days
+def listRecentSurvivors(ind_matrix, fam_matrix):
+    living_survivors = []
+    for row in ind_matrix:
+        if row[6] != 'NA':
+            for r in fam_matrix:
+                death_day = row[6]
+                now = date.today()
+                # Not 100% sure if this is how you check the last 30 days
+                if (now - death_day) < 31 :
+                    # Pretty sure this gets the spouse
+                    if r[3] == row[0] or r[5] == row[0]:
+                        living_survivors.append(row[1])
+                        # Need another if statement here to check for children of deceased
+                        return 0
+    return living_survivors
+
+
+# List all people in a GEDCOM file who were born in the last 30 days
+def listRecentBirths(ind_matrix, fam_matrix):
+    new_births = []
     for row in ind_matrix:
         if row[5] == True:
-            for r in fam_matrix:
-                if r[4] == row[1] or r[6] == row[1]:
-                    there = True
-            if there == False:
-                alive_married.append(row[1])
-    return alive_married
+            birth = datetime.strptime(row[3], '%d %b %Y')
+            now = date.today()
+            # Not 100% sure if this is how you check the last 30 days
+            if (now - birth) < 31:
+                new_births.append(row[1])
+    return new_births
