@@ -238,30 +238,87 @@ with open(filename, "r") as gedcomFile:
 print("\nTesting functions on the data: ") 
 
 # Checks that each of the individuals who are dead were living first.
-print(birthBeforeDeath(individual))
+result = (birthBeforeDeath(individual))
+if result == []:
+    print("No one died before they were born.")
+else:
+    print(result)
 
 # Checks that married individuals were born before they were married.
-print(birthBeforeMarriage(family, individual))
+result = birthBeforeMarriage(family, individual)
+if result == []:
+    print("No one was born before they were married.")
+else:
+    print(result)
 
+# Lists the large age differences.
 if (listLargeAgeDifferences(individual, family) == []):
     print("There are no large age differences in the dataset.")
 else:
     print(listLargeAgeDifferences(individual, family))
 
-livingSingle = []
-for person in individual:
-    if person[8] == 'NA':
-        livingSingle.append(person[1])
-print(livingSingle)
-print(listDeceased(individual))
-print(listLivingMarried(individual, family))
+# Lists people who are living single.
+result = listLivingSingle(individual, family)
+if result == []:
+    print("There are no people living single.")
+else:
+    print(result)
+
+# Lists deceased people.
+result = listDeceased(individual)
+if result == []:
+    print("There are no deceased people in this dataset.")
+else:
+    print(result)
+
+# Lists the living people who are married.
+result = listLivingMarried(individual, family)
+if result == []:
+    print("There are no living, married people in this dataset.")
+else:
+    print(result)
+
+# Checks that there are no married decendants people.
 print(noMarDes(individual, family))
 
+# Checks that there are no living people over 150.
+result = olderThan150(individual)
+if result == []:
+    print("There are no people living over the age of 150 in this dataset.")
+else:
+    print(result)
 
+# Checks that all male children have the same names as their dads.
+result = maleLastNames(individual, family)
+if result == []:
+    print("There are no male children without their father's last name.")
+else:
+    print(result)
 
+# divorceBeforeDeath
+result = divorceBeforeDeath(family, individual)
+if result == []:
+    print("There are people divorced before death.")
+else:
+    print(result)
 
+# birthBeforeMP
+result = birthBeforeMP(family, individual)
+if result == []:
+    print("No one was born before the marriage of their parents.")
+else:
+    print(result)
 
+# listRecentSurvivors
+esult = listRecentSurvivors(individual, family)
+if result == []:
+    print("No one was survivied recently.")
+else:
+    print(result)
 
-
-
-            
+# listRecentBirths           
+esult = listRecentBirths(individual)
+if result == []:
+    print("No one was born recently.")
+else:
+    print(result)

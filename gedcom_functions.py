@@ -156,37 +156,43 @@ def flatten(lis):
     return res
 
 # Validates that a person was married before divorce
-def marriageBeforeDivorce(family, individual):
-    partnerOneID = family[3]
-    partnerTwoID = family[5]
-    individualID = individual[0]
-    if ((partnerOneID == individualID) or (partnerTwoID == individualID)):
-        if (family[2]) != "NA":
-            marriage_date = parser.parse(family[1])
-            divorce_date = parser.parse(family[2])
-            if (marriage_date < divorce_date):
-                return True
-            else:
-                return False
-        else: return True
-    else:
-        return 'Error: Individual provided not in family.'
-
+def marriageBeforeDivorce(fam_matrix, ind_matrix):
+    arr = []
+    for row in ind_matrix:
+        fam_id = row[8]
+        ind_name = row[1]
+        for rowr in fam_matrix:
+            if rowr[0] == fam_id:
+                if rowr[2] != "NA":
+                    marriage_date = parser.parse(rowr[1])
+                    divorce_date = parser.parse(rowr[2])
+                    if (marriage_date < divorce_date):
+                        continue
+                    else:
+                        arr.append("Error: " + ind_name + " was divorced before they were married.")
+                else:
+                    continue
+    return arr
+    
 # Validates that a person was married before their death.
-def marriageBeforeDeath(family, individual):
-    partnerOneID = family[3]
-    partnerTwoID = family[5]
-    individualID = individual[0]
-    if ((partnerOneID == individualID) or (partnerTwoID == individualID)):
-        marriage_date = parser.parse(family[1])
-        death_date = parser.parse(individual[6])
-        if (marriage_date < death_date):
-            return True
-        else:
-            return False
-    else:
-        return 'Error: Individual provided not in family.'
-         
+def marriageBeforeDeath(fam_matrix, ind_matrix):
+    arr = []
+    for row in ind_matrix:
+        fam_id = row[8]
+        ind_name = row[1]
+        if row[6] != "NA" :
+            death_date = parser.parse(row[6])
+            for rowr in fam_matrix:
+                if rowr[0] == fam_id:
+                    marriage_date = parser.parse(rowr[1])
+                    if (marriage_date < death_date):
+                        continue
+                    else:
+                        arr.append("Error: " + ind_name + " died before they were married.")
+                else:
+                    continue
+    return arr
+    
 # Checks if anyone has an age of over 150yrs and is alive.
 def olderThan150(individuals):
     result_array = []
@@ -195,4 +201,106 @@ def olderThan150(individuals):
         # Checks if their age attribute is > 150.
         person = row[1]
         if row[4] > 150 and row[5] == True:
-            return("Error: " + person + " should not be listed as alive.")
+            result_array.append("Error: " + person + " should not be listed as alive.")
+    return result_array
+
+# All male members of a family should have the same last name.
+def maleLastNames(individual, family):
+    result_array = []
+    # Iterate the family matrix.
+    for i in family:
+        father_name = i[4]
+        father_name = father_name.split(" ")[1]
+        # Checks if the family does not have children.
+        if i[7] == 'NA':
+            pass
+        # If the family has children.
+        else:
+            children = i[7]
+            # Iterate the children in the family matrix.
+            for child in children:
+                # Iterate the individual matrix.
+                for person in individual:
+                    # Check if the child is the correct person and is male.
+                    if person[0] == child and person[2] == 'M':
+                        child_name = person[1].split(" ")[1]
+                        # Check if child's last name is equal to their father's.
+                        if (child_name != father_name):
+                            result_array.append("Error: " + person[0] + " does not have the same name as their father.")
+                    else:
+                        pass
+    return result_array
+
+# List all living spouses and descendants of
+# people in a GEDCOM file who died in the last 30 days
+def listRecentSurvivors(ind_matrix, fam_matrix):
+    living_survivors = []
+    for row in ind_matrix:
+        if row[6] != 'NA':
+            person_ID = row[0]
+            death_day = datetime.strptime(row[6], '%d %b %Y')
+            current_datetime = datetime.now()
+            days_since_death = (current_datetime - death_day).days
+            if days_since_death < 31 :
+                for r in fam_matrix:
+                    # Get spouse ID
+                    if person_ID == r[3]:
+                        living_survivors.append(r[5])
+                        if r[7] != 0:
+                            for c in r[7]:
+                                living_survivors.append(c)
+                    elif person_ID == r[5]:
+                        living_survivors.append(r[3])
+                        if r[7] != 0:
+                            for c in r[7]:
+                                living_survivors.append(c)
+                    #Iterate through children and get IDs
+             
+    return living_survivors
+
+# List all people in a GEDCOM file who were born in the last 30 days
+def listRecentBirths(ind_matrix):
+    new_births = []
+    for row in ind_matrix:
+        if row[5] == True:
+            birth = datetime.strptime(row[3], '%d %b %Y')
+            current_datetime = datetime.now()
+            days_since_birth = (current_datetime - birth).days
+            # Not 100% sure if this is how you check the last 30 days
+            if days_since_birth < 31:
+                new_births.append(row)
+    return new_births
+
+def divorceBeforeDeath(fam_matrix, ind_matrix):
+    arr = []
+    for row in ind_matrix:
+        fam_id = row[8]
+        ind_name = row[1]
+        if (row[6] != "NA"):
+            death_date = parser.parse(row[6])
+            for rowr in fam_matrix:
+                if rowr[0] == fam_id:
+                    if (rowr[2])!= "NA":
+                        divorce_date = parser.parse(rowr[2])
+                        if (divorce_date < death_date):
+                            continue
+                        else:
+                            arr.append("Error: " + ind_name + " died before their divorce.")
+                    else:
+                        continue
+    return arr
+    
+def birthBeforeMP(fam_matrix, ind_matrix):
+    arr=[]
+    for row in ind_matrix:
+        ind_id = row[0]
+        ind_name = row[1]
+        birth_date = parser.parse(row[3])
+        for rowr in fam_matrix:
+            if ind_id in rowr[7]:
+                marriage_date = parser.parse(rowr[1])
+                if (marriage_date < birth_date):
+                    continue
+                else:
+                    arr.append(ind_name + " was born before their parents were married.")
+    return arr
