@@ -159,7 +159,6 @@ def flatten(lis):
 # lists descendants of a parent
 def listDes(ind_matrix, fam_matrix, childList):
     des = childList
-
     for child in childList:
         for rower in fam_matrix:
             if (child == rower[3] or child == rower[5]) and rower[7] != 'NA':
@@ -174,18 +173,31 @@ def listRecentSurvivors(ind_matrix, fam_matrix):
     living_survivors = []
     for row in ind_matrix:
         if row[6] != 'NA':
-            for r in fam_matrix:
-                death_day = row[6]
-                now = date.today()
-                # Not 100% sure if this is how you check the last 30 days
-                if (now - death_day) < 31 :
-                    # Pretty sure this gets the spouse
-                    if r[3] == row[0] or r[5] == row[0]:
-                        living_survivors.append(row[1])
-                        # Need another if statement here to check for children of deceased
-                        return 0
+            person_ID = row[0]
+            death_day = datetime.strptime(row[6], '%d %b %Y')
+            current_datetime = datetime.now()
+            days_since_death = (current_datetime - death_day).days
+            if days_since_death < 31 :
+                for r in fam_matrix:
+                    # Get spouse ID
+                    if person_ID == r[3]:
+                        living_survivors.append(r[5])
+                        if r[7] != 0:
+                            for c in r[7]:
+                                living_survivors.append(c)
+                    elif person_ID == r[5]:
+                        living_survivors.append(r[3])
+                        if r[7] != 0:
+                            for c in r[7]:
+                                living_survivors.append(c)
+                    #Iterate through children and get IDs
+
+                    
     return living_survivors
 
+
+#if r[3] == row[0] or r[5] == row[0]:
+#living_survivors.append(row)
 
 # List all people in a GEDCOM file who were born in the last 30 days
 def listRecentBirths(ind_matrix):

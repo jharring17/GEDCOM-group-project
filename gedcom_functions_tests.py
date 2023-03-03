@@ -578,8 +578,51 @@ class testGEDCOM(unittest.TestCase):
         result = gedcom_functions.marriageBeforeDeath(["@F2@", "5 JUL 2002", "NA", "@I6@",  "Arthur /Meumann/", "@I7@", "Lori /Meumann/",['@I2@', '@I8@']], ["@I6@", "Arthur /Meumann/", "M", "6 DEC 1922", "101", "False", "3 JAN 1999", "NA", "@F5@"])
         self.assertFalse(result)  
 
-    # Should evaluate to True.
+    # Should pass and evaluate to an empty list.
     def test1_listRecentSurvivors(self):
+        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA'],
+        ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
+        ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, True, 'NA', '@F3@', '@F1@'],
+        ['@I4@','Si Go', 'M', '3 May 1923', 100, False, '23 Feb 2023', 'NA', '@F3@'],
+        ['@I5@', 'Lan Phang', 'F', '5 JUN 1925', 98, True, 'NA', 'NA', '@F3@' ]]
+
+        family_matrix1 = [['@F1@','15 Jun 1985', 'NA', '@I2@', 'Brad Meumann', '@I3@', 'Sally Go',['@I1@']],
+        ['@F2@', '5 Jul 1945', 'NA', '@I6@','Arthur Meumann', '@I7@', 'Lori Meumann', ['@I2@']],
+        [ '@F3@', '5 Nov 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
+
+        result = gedcom_functions.listRecentSurvivors(individual_matrix6, family_matrix1)
+        self.assertEqual(result, ['@I5@', '@I3@'])
+        
+    # Should pass and evaluate to Sally and Chris's Info.
+    def test2_listRecentSurvivors(self):
+        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA'],
+        ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, False, '14 Feb 2023', '@F2@', '@F1@'],
+        ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, True, 'NA', '@F3@', '@F1@'],
+        ['@I4@','Si Go', 'M', '3 May 1923', 100, True, 'NA', 'NA', '@F3@']]
+
+        family_matrix1 = [['@F1@','15 Jun 1985', 'NA', '@I2@', 'Brad Meumann', '@I3@', 'Sally Go',['@I1@']],
+        ['@F2@', '5 Jul 1945', 'NA', '@I6@','Arthur Meumann', '@I7@', 'Lori Meumann', ['@I2@']],
+        [ '@F3@', '5 Nov 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
+
+        result = gedcom_functions.listRecentSurvivors(individual_matrix6, family_matrix1)
+        self.assertEqual(result, ['@I3@', '@I1@'])
+        
+    # Should pass and evaluate to Brad and Chris's Information.
+    def test3_listRecentSurvivors(self):
+        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA'],
+        ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
+        ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, False, '26 Feb 2023', '@F3@', '@F1@'],
+        ['@I4@','Si Go', 'M', '3 May 1923', 100, True, 'NA', 'NA', '@F3@']]
+
+        family_matrix1 = [['@F1@','15 Jun 1985', 'NA', '@I2@', 'Brad Meumann', '@I3@', 'Sally Go',['@I1@']],
+        ['@F2@', '5 Jul 1945', 'NA', '@I6@','Arthur Meumann', '@I7@', 'Lori Meumann', ['@I2@']],
+        [ '@F3@', '5 Nov 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
+
+        result = gedcom_functions.listRecentSurvivors(individual_matrix6, family_matrix1)
+        self.assertEqual(result, ['@I2@', '@I1@'])
+        
+    # Should pass and evaluate to an empty list.
+    def test4_listRecentSurvivors(self):
         individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA'],
         ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
         ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, True, 'NA', '@F3@', '@F1@'],
@@ -592,49 +635,7 @@ class testGEDCOM(unittest.TestCase):
         result = gedcom_functions.listRecentSurvivors(individual_matrix6, family_matrix1)
         self.assertEqual(result, [])
         
-    # Should evaluate to True.
-    def test2_listRecentSurvivors(self):
-        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA'],
-        ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, False, '14 Feb 2023', '@F2@', '@F1@'],
-        ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, True, 'NA', '@F3@', '@F1@'],
-        ['@I4@','Si Go', 'M', '3 May 1923', 100, True, 'NA', 'NA', '@F3@']]
-
-        family_matrix1 = [['@F1@','15 Jun 1985', 'NA', '@I2@', 'Brad Meumann', '@I3@', 'Sally Go',['@I1@']],
-        ['@F2@', '5 Jul 1945', 'NA', '@I6@','Arthur Meumann', '@I7@', 'Lori Meumann', ['@I2@']],
-        [ '@F3@', '5 Nov 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
-
-        result = gedcom_functions.listRecentSurvivors(individual_matrix6, family_matrix1)
-        self.assertEqual(result, [['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, True, 'NA', '@F3@', '@F1@'], ['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA']])
-        
-    # Should evaluate to True.
-    def test3_listRecentSurvivors(self):
-        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA'],
-        ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
-        ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, False, '26 Feb 2023', '@F3@', '@F1@'],
-        ['@I4@','Si Go', 'M', '3 May 1923', 100, True, 'NA', 'NA', '@F3@']]
-
-        family_matrix1 = [['@F1@','15 Jun 1985', 'NA', '@I2@', 'Brad Meumann', '@I3@', 'Sally Go',['@I1@']],
-        ['@F2@', '5 Jul 1945', 'NA', '@I6@','Arthur Meumann', '@I7@', 'Lori Meumann', ['@I2@']],
-        [ '@F3@', '5 Nov 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
-
-        result = gedcom_functions.listRecentSurvivors(individual_matrix6, family_matrix1)
-        self.assertEqual(result, [['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'], ['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA']])
-        
-    # Should evaluate to False.
-    def test4_listRecentSurvivors(self):
-        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA'],
-        ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
-        ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, True, 'NA', '@F3@', '@F1@'],
-        ['@I4@','Si Go', 'M', '3 May 1923', 100, True, 'NA', 'NA', '@F3@']]
-
-        family_matrix1 = [['@F1@','15 Jun 1985', 'NA', '@I2@', 'Brad Meumann', '@I3@', 'Sally Go',['@I1@']],
-        ['@F2@', '5 Jul 1945', 'NA', '@I6@','Arthur Meumann', '@I7@', 'Lori Meumann', ['@I2@']],
-        [ '@F3@', '5 Nov 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
-
-        result = gedcom_functions.listRecentSurvivors(individual_matrix6, family_matrix1)
-        self.assertEqual(result, ['@I4@','Si Go', 'M', '3 May 1923', 100, True, 'NA', 'NA', '@F3@'])
-        
-    # Should evaluate to False.
+    # Should pass and evaluate to an empty list.
     def test5_listRecentSurvivors(self):
         individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA'],
         ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
@@ -646,7 +647,7 @@ class testGEDCOM(unittest.TestCase):
         [ '@F3@', '5 Nov 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
 
         result = gedcom_functions.listRecentSurvivors(individual_matrix6, family_matrix1)
-        self.assertEqual(result, [['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'], ['@I1@''Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA']])
+        self.assertEqual(result, [])
 
 
     # Should pass evaluate to Chris Meumann's Info.
