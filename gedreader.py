@@ -224,6 +224,11 @@ with open(filename, "r") as gedcomFile:
     #         family[count][0] = a[8]
 
 
+    # fam table - replace 0's with NAs
+    for i in range(len(family)):
+        for j in range(len(family[i])):
+            if family[i][j] == 0:
+                family[i][j] = "NA"
             
 
     #print individual data
@@ -271,6 +276,8 @@ for person in individual:
 print(livingSingle)
 print(listDeceased(individual))
 
+print()
+print(noMarDes(individual, family))
 
 
 

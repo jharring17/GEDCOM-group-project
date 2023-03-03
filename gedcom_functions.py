@@ -112,6 +112,7 @@ def listLivingSingle(ind_matrix, fam_matrix):
                 single.append(row[1])
     return single
 
+#lists all living and married (does not include divorced)
 def listLivingMarried(ind_matrix, fam_matrix):
     married = []
     for row in fam_matrix:
@@ -121,6 +122,47 @@ def listLivingMarried(ind_matrix, fam_matrix):
                     if r[5] == True:
                         married.append(r[1])
     return married
+
+# no parents should be married to any of their descendants
+# should return true if none are married to descendants
+# check if children id matches spouse id
+# then check if they have children
+# do this until we reach the "leaf" or last child without children
+def noMarDes(ind_matrix, fam_matrix):
+    for row in fam_matrix:
+        husband = row[3]
+        wife = row[5]
+        if row[7] != 'NA':
+            children = row[7]
+            des = listDes(ind_matrix, fam_matrix, children)
+            for person in des:
+                for r in fam_matrix:
+                    if (r[3] == husband and r[5] == person) or (r[3] == person and r[5] == wife):
+                        return False
+    return True
+                
+# noMarDes helper function
+# lists descendants of a parent
+def listDes(ind_matrix, fam_matrix, childList):
+    des = childList
+
+    for child in childList:
+        for rower in fam_matrix:
+            if (child == rower[3] or child == rower[5]) and rower[7] != 'NA':
+                children = rower[7]
+                des.append(listDes(ind_matrix, fam_matrix, children))
+                des = flatten(des)
+    return des
+
+# flattens list [hi, hello, [here]] -> [hi, hello, here]
+def flatten(lis):
+    res = []
+    for item in lis:
+        if isinstance(item, list):
+            res.extend(flatten(item))
+        else:
+            res.append(item)
+    return res
 
 # Validates that a person was married before divorce
 def marriageBeforeDivorce(family, individual):
