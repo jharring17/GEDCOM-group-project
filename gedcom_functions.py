@@ -2,35 +2,33 @@
 from datetime import *
 from dateutil import parser
 
-#TODO: Replace input with a matrix.
 # Validates if birth comes before death.
-def birthBeforeDeath(birth, death):
-    birth_date = parser.parse(birth)
-    death_date = parser.parse(death)
-    if (death_date < birth_date):
-        # If death before birth.
-        return False
-    else:
-        # If death after birth.
-        return True
+def birthBeforeDeath(individuals):
+    result_array = []
+    for row in individuals:
+        if (row[6] == 'NA'):
+            pass
+        else:
+            individual = row[1]
+            birth_date = parser.parse(row[3])
+            death_date = parser.parse(row[6]) 
+            if (death_date < birth_date):
+                result_array.append("Error: " + individual + " died before they were born.")
+    return result_array
 
 # Validates that a person was born before they were married.
 def birthBeforeMarriage(family, individual):
-    partnerOneID = family[3]
-    partnerTwoID = family[5]
-    individualID = individual[0]
-    # Preforms check to see if family member is spouse.
-    if ((partnerOneID == individualID) or (partnerTwoID == individualID)):
-        # Parses birth_date and marriage_date.
-        marriage_date = parser.parse(family[1])
-        birth_date = parser.parse(individual[3])
-        # Checks that marriage_date occurs after birth_date.
-        if (marriage_date > birth_date):
-            return True
-        else:
-            return False
-    else:
-        return 'Error: Individual provided not in family.'
+    result_array = []
+    for i in individual:
+        individual_id = i[0]
+        individual_name = i[1]
+        individual_birth = parser.parse(i[3])
+        for j in family:
+            if individual_id == j[3] or individual_id == j[5]:
+                marriage_date = parser.parse(j[1])
+                if individual_birth > marriage_date:
+                    result_array.append("Error: " + individual_name + " was married before they were born.")
+    return result_array
 
 # Lists all orphaned children when passed
 # a list of children (under 18).
@@ -153,3 +151,13 @@ def olderThan150(individuals):
         person = row[1]
         if row[4] > 150 and row[5] == True:
             return("Error: " + person + " should not be listed as alive.")
+
+# All male members of a family should have the same last name.
+# def maleLastNames(individuals):
+#   Iterate a family:
+#       Get husband name in a family
+#       Split out the name and save it.
+#       Check if child is M
+#           If child is M
+#               Parse the child's lastname
+#               Compare with the father's lastname.
