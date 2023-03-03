@@ -269,11 +269,7 @@ if (listLargeAgeDifferences(individual, family) == []):
 else:
     print(listLargeAgeDifferences(individual, family))
 
-livingSingle = []
-for person in individual:
-    if person[8] == 'NA':
-        livingSingle.append(person[1])
-print(livingSingle)
+print(listLivingSingle(individual, family))
 print(listDeceased(individual))
 print(listLivingMarried(individual, family))
 print(noMarDes(individual, family))
