@@ -691,6 +691,32 @@ class testGEDCOM(unittest.TestCase):
 
     def test2noMarDes(self):
         ind_m = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 3, False, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, False, 'NA', 'NA', 'I9'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@I10'],
+        ['@I4@', 'Mary Brown', 'Female', '17 Oct 1977', 44, False, 'NA', 'NA', 'NA'],
+        ['@I5@', 'Daniel Kim', 'Male', '29 Apr 1998', 23, False, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Samantha Kim', 'Female', '12 Jul 2001', 22, False, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'Mike Johnson', 'Male', '11 Sep 1990', 31, False, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Andrew Kim', 'Female', '06 Feb 1975', 48, False, '12 Dec 2021', '@F3@', '@F5@'],
+        ['@I9@', 'Jack Dance', 'Male', '27 Nov 1989', 32, False, 'NA', '@F5@', '@F1@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '20 May 1995', 32, False, 'NA', 'NA', 'NA']]
+
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I14@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@F3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I2@', '@I3@', '@I4@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I9@', 'Eric Chen', '@I2@', 'Jane Doe', 'NA']]
+
+        result = gedcom_functions.noMarDes(ind_m, fam_m)
+        self.assertFalse(result)
+
+    def test3noMarDes(self):
+        ind_m = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 3, False, 'NA', '@F5@', 'NA'],
         ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, False, 'NA', 'NA', '@F3@'],
         ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
         ['@I4@', 'Mary Brown', 'Female', '17 Oct 1977', 44, False, 'NA', 'NA', 'NA'],
@@ -709,8 +735,60 @@ class testGEDCOM(unittest.TestCase):
         ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
         ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
         ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@F3@'],
-        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', '@I2@, @I3, @I4@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I2@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Andrew Kim', '@I20@', 'Michelle Park', 'NA']]
+
+        result = gedcom_functions.noMarDes(ind_m, fam_m)
+        self.assertTrue(result)
+
+    def test4noMarDes(self):
+        ind_m = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 3, False, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, False, 'NA', 'NA', 'I9'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@I10'],
+        ['@I4@', 'Mary Brown', 'Female', '17 Oct 1977', 44, False, 'NA', 'NA', 'NA'],
+        ['@I5@', 'Daniel Kim', 'Male', '29 Apr 1998', 23, False, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Samantha Kim', 'Female', '12 Jul 2001', 22, False, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'Mike Johnson', 'Male', '11 Sep 1990', 31, False, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Andrew Kim', 'Female', '06 Feb 1975', 48, False, '12 Dec 2021', '@F3@', '@F5@'],
+        ['@I9@', 'Jack Dance', 'Male', '27 Nov 1989', 32, False, 'NA', '@F5@', '@F1@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '20 May 1995', 32, False, 'NA', 'NA', 'NA']]
+
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jck Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I23@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I33@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I9@', 'Eric Chen', '@I3@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@F3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I2@', '@I3@', '@I4@']],
         ['@F10@', '30 Oct 2010', 'NA', '@I9@', 'Eric Chen', '@I2@', 'Jane Doe', 'NA']]
+
+        result = gedcom_functions.noMarDes(ind_m, fam_m)
+        self.assertFalse(result)
+
+    def test5noMarDes(self):
+        ind_m = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 3, False, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, False, 'NA', 'NA', 'I9'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@I10'],
+        ['@I4@', 'Mary Brown', 'Female', '17 Oct 1977', 44, False, 'NA', 'NA', 'NA'],
+        ['@I5@', 'Daniel Kim', 'Male', '29 Apr 1998', 23, False, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Samantha Kim', 'Female', '12 Jul 2001', 22, False, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'Mike Johnson', 'Male', '11 Sep 1990', 31, False, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Andrew Kim', 'Female', '06 Feb 1975', 48, False, '12 Dec 2021', '@F3@', '@F5@'],
+        ['@I9@', 'Jack Dance', 'Male', '27 Nov 1989', 32, False, 'NA', '@F5@', '@F1@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '20 May 1995', 32, False, 'NA', 'NA', 'NA']]
+
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I14@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@F3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I3@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I3@', 'Erica Man', '@I19@', 'Karen Wu', 'NA']]
 
         result = gedcom_functions.noMarDes(ind_m, fam_m)
         self.assertFalse(result)

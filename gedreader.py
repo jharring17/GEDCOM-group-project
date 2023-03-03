@@ -275,12 +275,8 @@ for person in individual:
         livingSingle.append(person[1])
 print(livingSingle)
 print(listDeceased(individual))
-
-print()
+print(listLivingMarried(individual, family))
 print(noMarDes(individual, family))
-
-
-
 
 
 
