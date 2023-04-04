@@ -304,3 +304,32 @@ def birthBeforeMP(fam_matrix, ind_matrix):
                 else:
                     arr.append(ind_name + " was born before their parents were married.")
     return arr
+
+# Checks that dates in fam_matrix and ind_matrix occur only before the current date. 
+# TODO: preform testing and add to the gedcom_functions_tests.py file.
+def datesBeforeCurrent(fam_matrix, ind_matrix):
+    arr = []
+    current_date = date.today()
+    for row in ind_matrix:
+        ind_id = row[0]
+        birth_date = parser.parse(row[3])
+        death_date = parser.parse(row[6])
+        if (birth_date > current_date or death_date > current_date):
+            arr.append("Error: " + ind_id + " was born after current date.")
+        if (death_date > current_date):
+            arr.append("Error: " + ind_id + " died after current date.")
+    for row in fam_matrix:
+        husband_id = row[3]
+        wife_id = row[5]
+        marriage_date = parser.parse(row[1])
+        if (marriage_date > current_date):
+            arr.append("Error: " + husband_id + " " + wife_id + " were married after current date.")
+    return arr
+
+def marriageAfterFourteen(fam_matrix, ind_matrix):
+    # Get the marriage date.
+    # Get the date each individual was born.
+    # Take the difference of the dates.
+    # Determine if either person was younger than 14 when married.
+    # If yes, append to result array, else pass.
+    return

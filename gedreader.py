@@ -310,15 +310,22 @@ else:
     print(result)
 
 # listRecentSurvivors
-esult = listRecentSurvivors(individual, family)
+result = listRecentSurvivors(individual, family)
 if result == []:
     print("No one was survivied recently.")
 else:
     print(result)
 
 # listRecentBirths           
-esult = listRecentBirths(individual)
+result = listRecentBirths(individual)
 if result == []:
     print("No one was born recently.")
 else:
+    print(result)
+
+# datesBeforeCurrent
+result = datesBeforeCurrent(family, individual)
+if result == []:
+    print("No one was born, died, or married after current date.")
+else: 
     print(result)
