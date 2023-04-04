@@ -1524,6 +1524,44 @@ class testGEDCOM(unittest.TestCase):
         result = gedcom_functions.birthBeforeMP(f_mat19, i_mat19)
         self.assertEqual(result, [])
 
+    def test1_listUpcomingBirthdays(self):
+        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Apr 2022', 1, True, 'NA', '@F1@', 'NA'],
+        ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
+        ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, False, '1 Jan 2022', '@F3@', '@F1@'],
+        ['@I4@','Si Go', 'M', '3 May 1923', 100, True, 'NA', 'NA', '@F3@']]
+
+        result = gedcom_functions.listUpcomingBirthdays(individual_matrix6)
+        self.assertEqual(result, [['@I1@','Chris Meumann', 'M', '14 Apr 2022', 1, True, 'NA', '@F1@', 'NA']])
+
+    def test2_listUpcomingBirthdays(self):
+        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Mar 2022', 1, True, 'NA', '@F1@', 'NA'],
+        ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
+        ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, False, '1 Jan 2022', '@F3@', '@F1@'],
+        ['@I4@','Si Go', 'M', '1 May 1923', 99, True, 'NA', 'NA', '@F3@']]
+
+        result = gedcom_functions.listUpcomingBirthdays(individual_matrix6)
+        self.assertEqual(result, [['@I4@','Si Go', 'M', '1 May 1923', 99, True, 'NA', 'NA', '@F3@']])
+    
+    def test3_listUpcomingBirthdays(self):
+        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Mar 2022', 1, True, 'NA', '@F1@', 'NA'],
+        ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
+        ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, False, '1 Jan 2022', '@F3@', '@F1@'],
+        ['@I4@','Si Go', 'M', '1 Jun 1923', 99, True, 'NA', 'NA', '@F3@']]
+
+        result = gedcom_functions.listUpcomingBirthdays(individual_matrix6)
+        self.assertEqual(result, [])
+
+    def test4_listUpcomingBirthdays(self):
+        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Mar 2022', 1, True, 'NA', '@F1@', 'NA'],
+        ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
+        ['@I3@', 'Sally Go', 'F', '10 Apr 1961', 62, False, '1 Jan 2022', '@F3@', '@F1@'],
+        ['@I4@','Si Go', 'M', '1 Jun 1923', 99, True, 'NA', 'NA', '@F3@']]
+
+        result = gedcom_functions.listUpcomingBirthdays(individual_matrix6)
+        self.assertEqual(result, [])
+
+
+
 # Enables us to call test file like python file.
 if __name__ == '__main__':
     unittest.main()

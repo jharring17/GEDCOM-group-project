@@ -266,10 +266,49 @@ def listRecentBirths(ind_matrix):
             birth = datetime.strptime(row[3], '%d %b %Y')
             current_datetime = datetime.now()
             days_since_birth = (current_datetime - birth).days
-            # Not 100% sure if this is how you check the last 30 days
             if days_since_birth < 31:
                 new_births.append(row)
     return new_births
+
+#List all living people in a GEDCOM file whose birthdays occur in the next 30 days
+def listUpcomingBirthdays(ind_matrix):
+    near_birthday = []
+    for row in ind_matrix:
+        if row[5] == True:
+            birthday = datetime.strptime(row[3], '%d %b')
+            now = datetime.now()
+            then = now + timedelta(30)
+            days_until_birthday = (then - birthday).days
+            if days_until_birthday < 31:
+                near_birthday.append(row)
+    return near_birthday
+
+
+#List all living couples in a GEDCOM file 
+# whose marriage anniversaries occur in the next 30 days
+def listUpcomingAnniversaries(ind_matrix, fam_matrix):
+    upcomping_anniversaries = []
+    for row in ind_matrix:
+        if row[6] != 'NA':
+            person_ID = row[0]
+            #Get Spouse to compare marriage day
+            for r in fam_matrix:
+                if person_ID == r[3]:
+                    anni_date = datetime.strptime(r[1], '%d %b')
+                    now = datetime.now()
+                    then = now + timedelta(30)
+                    days_until_anni = (then - anni_date).days
+                if days_until_anni < 31:
+                    upcomping_anniversaries.append(r[5])
+                if person_ID == r[5]:
+                    anni_date = datetime.strptime(r[1], '%d %b')
+                    now = datetime.now()
+                    then = now + timedelta(30)
+                    days_until_anni = (then - anni_date).days
+                if days_until_anni < 31:
+                    upcomping_anniversaries.append(r[3])
+    return upcomping_anniversaries
+
 
 def divorceBeforeDeath(fam_matrix, ind_matrix):
     arr = []
