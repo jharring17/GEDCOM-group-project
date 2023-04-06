@@ -164,6 +164,30 @@ def flatten(lis):
             res.append(item)
     return res
 
+# Fewer than 15 siblings
+# Returns True if family has less than 15 siblings
+# Returns False if family has 15 or more siblings
+def sibling15(fam_matrix):
+    for row in fam_matrix:
+        if (row[7]!= 'NA') and (len(row[7]) >= 15):
+            return False
+    return True
+
+# Siblings should not marry
+# Returns true if no siblings are married to eachother
+# Returns false if sibling is married to another sibling
+def marriedSiblings(fam_matrix):
+    for row in fam_matrix:
+        if row[7] != 'NA':
+            siblings = row[7]
+            if len(siblings) >= 2:
+                for rower in fam_matrix:
+                    hus = rower[3]
+                    wife = rower[5]
+                    if (hus in siblings) and (wife in siblings):
+                        return False
+    return True
+
 # Validates that a person was married before divorce
 def marriageBeforeDivorce(family, individual):
     partnerOneID = family[3]

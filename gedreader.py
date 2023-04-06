@@ -243,9 +243,12 @@ with open(filename, "r") as gedcomFile:
 
     print(tabulate(family, headers=famheaders, tablefmt='fancy_grid'))
 
+
+
+
 ##############################################################
 # Tests the functions with the data.
-print("\nTesting functions on the data: ") 
+print("\n\n\nTesting functions on the data: ") 
 
 # Checks that each of the individuals who are dead were living first.
 for i in individual:
@@ -273,6 +276,17 @@ print(listLivingSingle(individual, family))
 print(listDeceased(individual))
 print(listLivingMarried(individual, family))
 print(noMarDes(individual, family))
+
+if sibling15(family) == False:
+    print("There are more than 15 siblings in this family")
+else:
+    print("There are less than 15 siblings in this family")
+
+if marriedSiblings(family) == False:
+    print("Sibling married to sibling")
+else:
+    print("No siblings are married to eachother")
+
 
 
 

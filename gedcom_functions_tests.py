@@ -662,7 +662,6 @@ class testGEDCOM(unittest.TestCase):
         result = gedcom_functions.listLivingMarried(ind_m, fam_m)
         self.assertEqual(result, [])
 
-    # 
     def test1noMarDes(self):
         ind_m = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 3, False, 'NA', '@F5@', 'NA'],
         ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, False, 'NA', 'NA', '@F3@'],
@@ -791,6 +790,155 @@ class testGEDCOM(unittest.TestCase):
         ['@F10@', '30 Oct 2010', 'NA', '@I3@', 'Erica Man', '@I19@', 'Karen Wu', 'NA']]
 
         result = gedcom_functions.noMarDes(ind_m, fam_m)
+        self.assertFalse(result)
+
+    def test1sibling15(self):
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jck Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I23@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I33@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I9@', 'Eric Chen', '@I3@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I2@', '@I3@', '@I4@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I9@', 'Eric Chen', '@I2@', 'Jane Doe', 'NA']]
+
+        result = gedcom_functions.sibling15(fam_m)
+        self.assertTrue(result)
+
+    def test2sibling15(self):
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I14@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I3@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I3@', 'Erica Man', '@I19@', 'Karen Wu', 'NA']]
+
+        result = gedcom_functions.sibling15(fam_m)
+        self.assertTrue(result)
+
+    def test3sibling15(self):
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jck Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I23@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I33@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I9@', 'Eric Chen', '@I3@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@F3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I2@', '@I3@', '@I4@', '@I5@', '@I6@', '@I7@', '@I8@', '@I9@', '@I10@', '@I11@', '@I12@', '@I13@', '@I15@', '@I16@', '@I17@', '@I18@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I9@', 'Eric Chen', '@I2@', 'Jane Doe', 'NA']]
+
+        result = gedcom_functions.sibling15(fam_m)
+        self.assertFalse(result)
+
+    def test4sibling15(self):
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jck Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I23@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I33@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I9@', 'Eric Chen', '@I3@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I2@', 'William Huang', '@I4@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@F3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I2@', '@I3@', '@I4@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I9@', 'Eric Chen', '@I2@', 'Jane Doe', 'NA']]
+        result = gedcom_functions.sibling15(fam_m)
+        self.assertTrue(result)
+
+    def test5sibling15(self):
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I14@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I1@', '@I2@', '@I3@', '@I4@', '@I5@', '@I6@', '@I7@', '@I8@', '@I9@', '@I10@', '@I11@', '@I12@', '@I13@', '@I14@', '@I15@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I3@', 'Erica Man', '@I19@', 'Karen Wu', 'NA']]
+
+        result = gedcom_functions.sibling15(fam_m)
+        self.assertFalse(result)
+
+    def test1marriedSiblings(self):
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I14@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I3@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I3@', 'Erica Man', '@I19@', 'Karen Wu', 'NA']]
+
+        result = gedcom_functions.marriedSiblings(fam_m)
+        self.assertTrue(result)
+
+    def test2marriedSiblings(self):
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jck Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I23@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I33@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I9@', 'Eric Chen', '@I3@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@F3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I2@', '@I3@', '@I4@', '@I5@', '@I6@', '@I7@', '@I8@', '@I9@', '@I10@', '@I11@', '@I12@', '@I13@', '@I14@', '@I15@', '@I16@', '@I17@', '@I18@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I9@', 'Eric Chen', '@I2@', 'Jane Doe', 'NA']]
+
+        result = gedcom_functions.marriedSiblings(fam_m)
+        self.assertFalse(result)
+        
+    def test3marriedSiblings(self):
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I21@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I100@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I34@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I64@', 'Robert Johnson', '@I14@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I124@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I66@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I72@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I10@', 'Samantha Wang', '@I3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I1@', '@I2@', '@I3@', '@I4@', '@I5@', '@I6@', '@I7@', '@I8@', '@I9@', '@I10@', '@I11@', '@I12@', '@I13@', '@I14@', '@I15@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I53@', 'Erica Man', '@I19@', 'Karen Wu', 'NA']]
+
+        result = gedcom_functions.marriedSiblings(fam_m)
+        self.assertFalse(result)
+
+    def test4marriedSiblings(self):
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jck Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I23@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I33@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I9@', 'Eric Chen', '@I3@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I2@', '@I3@', '@I4@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I9@', 'Eric Chen', '@I2@', 'Jane Doe', 'NA']]
+
+        result = gedcom_functions.marriedSiblings(fam_m)
+        self.assertTrue(result)
+
+    def test5marriedSiblings(self):
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jck Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I23@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I33@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I9@', 'Eric Chen', '@I3@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I3@', 'Richard Lee', '@I2@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I2@', '@I3@', '@I4@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I9@', 'Eric Chen', '@I2@', 'Jane Doe', 'NA']]
+
+        result = gedcom_functions.marriedSiblings(fam_m)
         self.assertFalse(result)
 
     # Should evaluate to True.
