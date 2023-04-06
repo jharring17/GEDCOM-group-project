@@ -298,15 +298,15 @@ def listUpcomingAnniversaries(ind_matrix, fam_matrix):
                     now = datetime.now()
                     then = now + timedelta(30)
                     days_until_anni = (then - anni_date).days
-                if days_until_anni < 31:
-                    upcomping_anniversaries.append(r[5])
-                if person_ID == r[5]:
+                    if days_until_anni < 31:
+                        upcomping_anniversaries.append(r[5], r[3])
+                elif person_ID == r[5]:
                     anni_date = datetime.strptime(r[1], '%d %b')
                     now = datetime.now()
                     then = now + timedelta(30)
                     days_until_anni = (then - anni_date).days
-                if days_until_anni < 31:
-                    upcomping_anniversaries.append(r[3])
+                    if days_until_anni < 31:
+                        upcomping_anniversaries.append(r[3], r[5])
     return upcomping_anniversaries
 
 
