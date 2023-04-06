@@ -270,44 +270,53 @@ def listRecentBirths(ind_matrix):
                 new_births.append(row)
     return new_births
 
-#List all living people in a GEDCOM file whose birthdays occur in the next 30 days
+#Lists the IDs of all living people in a GEDCOM file whose birthdays occur in the next 30 days
 def listUpcomingBirthdays(ind_matrix):
     near_birthday = []
     for row in ind_matrix:
         if row[5] == True:
-            birthday = datetime.strptime(row[3], '%d %b')
-            now = datetime.now()
-            then = now + timedelta(30)
-            days_until_birthday = (then - birthday).days
-            if days_until_birthday < 31:
-                near_birthday.append(row)
+            today = date.today()
+            birthday = datetime.strptime(row[3], '%d %b %Y')
+            next_birthday = birthday.replace(year=today.year)
+            if next_birthday < datetime.combine(today, datetime.min.time()):
+                next_birthday = next_birthday.replace(year=today.year + 1)
+            if (next_birthday - datetime.combine(today, datetime.min.time())).days < 31:
+                near_birthday.append(row[0])
     return near_birthday
 
 
-#List all living couples in a GEDCOM file 
+#Lists the IDs of all living couples in a GEDCOM file 
 # whose marriage anniversaries occur in the next 30 days
 def listUpcomingAnniversaries(ind_matrix, fam_matrix):
-    upcomping_anniversaries = []
+    upcoming_anniversaries = []
     for row in ind_matrix:
         if row[6] != 'NA':
             person_ID = row[0]
-            #Get Spouse to compare marriage day
+            # Get spouse to compare marriage day
             for r in fam_matrix:
                 if person_ID == r[3]:
-                    anni_date = datetime.strptime(r[1], '%d %b')
-                    now = datetime.now()
-                    then = now + timedelta(30)
-                    days_until_anni = (then - anni_date).days
-                    if days_until_anni < 31:
-                        upcomping_anniversaries.append(r[5], r[3])
+                    today = date.today()
+                    anni_date = datetime.strptime(r[1], '%d %b %Y')
+                    next_anni = anni_date.replace(year=today.year)
+                    if next_anni < datetime.combine(today, datetime.min.time()):
+                        next_anni = next_anni.replace(year=today.year + 1)
+                        # Check if current date is later than anniversary date for current year
+                        if today > next_anni:
+                            next_anni = next_anni.replace(year=next_anni.year + 1)
+                    if (next_anni - datetime.combine(today, datetime.min.time())).days < 31:
+                        upcoming_anniversaries.append((r[5], r[3]))
                 elif person_ID == r[5]:
-                    anni_date = datetime.strptime(r[1], '%d %b')
-                    now = datetime.now()
-                    then = now + timedelta(30)
-                    days_until_anni = (then - anni_date).days
-                    if days_until_anni < 31:
-                        upcomping_anniversaries.append(r[3], r[5])
-    return upcomping_anniversaries
+                    today = date.today()
+                    anni_date = datetime.strptime(r[1], '%d %b %Y')
+                    next_anni = anni_date.replace(year=today.year)
+                    if next_anni < datetime.combine(today, datetime.min.time()):
+                        next_anni = next_anni.replace(year=today.year + 1)
+                        # Check if current date is later than anniversary date for current year
+                        if today > next_anni:
+                            next_anni = next_anni.replace(year=next_anni.year + 1)
+                    if (next_anni - datetime.combine(today, datetime.min.time())).days < 31:
+                        upcoming_anniversaries.append((r[3], r[5]))
+    return upcoming_anniversaries
 
 
 def divorceBeforeDeath(fam_matrix, ind_matrix):

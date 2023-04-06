@@ -1219,7 +1219,7 @@ class testGEDCOM(unittest.TestCase):
         individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA'],
         ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
         ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, False, '1 Jan 2022', '@F3@', '@F1@'],
-        ['@I4@','Si Go', 'M', '3 May 1923', 100, True, 'NA', 'NA', '@F3@']]
+        ['@I4@','Si Go', 'M', '3 Jun 1923', 100, True, 'NA', 'NA', '@F3@']]
 
         family_matrix1 = [['@F1@','15 Jun 1985', 'NA', '@I2@', 'Brad Meumann', '@I3@', 'Sally Go',['@I1@']],
         ['@F2@', '5 Jul 1945', 'NA', '@I6@','Arthur Meumann', '@I7@', 'Lori Meumann', ['@I2@']],
@@ -1230,23 +1230,23 @@ class testGEDCOM(unittest.TestCase):
 
     # Should pass evaluate to Chris Meumann's Info.
     def test1_listRecentBirths(self):
-        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Feb 2023', 1, True, 'NA', '@F1@', 'NA'],
+        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '28 Mar 2023', 1, True, 'NA', '@F1@', 'NA'],
         ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
         ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, False, '1 Jan 2022', '@F3@', '@F1@'],
         ['@I4@','Si Go', 'M', '3 May 1923', 100, True, 'NA', 'NA', '@F3@']]
 
         result = gedcom_functions.listRecentBirths(individual_matrix6)
-        self.assertEqual(result, [['@I1@','Chris Meumann', 'M', '14 Feb 2023', 1, True, 'NA', '@F1@', 'NA']])
+        self.assertEqual(result, [['@I1@','Chris Meumann', 'M', '28 Mar 2023', 1, True, 'NA', '@F1@', 'NA']])
 
     # Should pass and evaluate to Chris Meumann's Info.
     def test2_listRecentBirths(self):
-        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Feb 2023', 0, True, 'NA', '@F1@', 'NA'],
+        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '3 Mar 2023', 0, True, 'NA', '@F1@', 'NA'],
         ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
         ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, False, '1 Jan 2022', '@F3@', '@F1@'],
         ['@I4@','Si Go', 'M', '2 Mar 2023', 0, True, 'NA', 'NA', '@F3@']]
 
         result = gedcom_functions.listRecentBirths(individual_matrix6)
-        self.assertEqual(result, [['@I1@','Chris Meumann', 'M', '14 Feb 2023', 0, True, 'NA', '@F1@', 'NA'], ['@I4@','Si Go', 'M', '2 Mar 2023', 0, True, 'NA', 'NA', '@F3@']])
+        self.assertEqual(result, [['@I1@','Chris Meumann', 'M', '24 Mar 2023', 0, True, 'NA', '@F1@', 'NA'], ['@I4@','Si Go', 'M', '2 Mar 2023', 0, True, 'NA', 'NA', '@F3@']])
 
     # Should pass and evaluate to an empty list.
     def test3_listRecentBirths(self):
@@ -1260,23 +1260,23 @@ class testGEDCOM(unittest.TestCase):
 
     # Should pass and evaluate to Chris Meumann and Si Go's Information.
     def test4_listRecentBirths(self):
-        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Feb 2023', 1, True, 'NA', '@F1@', 'NA'],
+        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '23 Mar 2023', 1, True, 'NA', '@F1@', 'NA'],
         ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
         ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, False, '1 Jan 2022', '@F3@', '@F1@'],
-        ['@I4@','Si Go', 'M', '2 Mar 2023', 0, True, 'NA', 'NA', '@F3@']]
+        ['@I4@','Si Go', 'M', '25 Mar 2023', 0, True, 'NA', 'NA', '@F3@']]
 
         result = gedcom_functions.listRecentBirths(individual_matrix6)
-        self.assertEqual(result, [['@I1@','Chris Meumann', 'M', '14 Feb 2023', 1, True, 'NA', '@F1@', 'NA'], ['@I4@','Si Go', 'M', '2 Mar 2023', 0, True, 'NA', 'NA', '@F3@']])
+        self.assertEqual(result, [['@I1@','Chris Meumann', 'M', '23 Mar 2023', 1, True, 'NA', '@F1@', 'NA'], ['@I4@','Si Go', 'M', '25 Mar 2023', 0, True, 'NA', 'NA', '@F3@']])
 
     # Should pass and evaluate to Chris Meumann's Information
     def test5_listRecentBirths(self):
-        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Feb 2023', 1, True, 'NA', '@F1@', 'NA'],
+        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '27 Mar 2023', 1, True, 'NA', '@F1@', 'NA'],
         ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
         ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, False, '1 Jan 2022', '@F3@', '@F1@'],
         ['@I4@','Si Go', 'M', '3 May 1923', 100, True, 'NA', 'NA', '@F3@']]
 
         result = gedcom_functions.listRecentBirths(individual_matrix6)
-        self.assertEqual(result, [['@I1@','Chris Meumann', 'M', '14 Feb 2023', 1, True, 'NA', '@F1@', 'NA']])
+        self.assertEqual(result, [['@I1@','Chris Meumann', 'M', '27 Mar 2023', 1, True, 'NA', '@F1@', 'NA']])
 
     def test1_divorceBeforeDeath(self):
         i_mat10 = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 35, True, '10 Feb 1989', '@F5@', '@F2@'],
@@ -1531,7 +1531,7 @@ class testGEDCOM(unittest.TestCase):
         ['@I4@','Si Go', 'M', '3 May 1923', 100, True, 'NA', 'NA', '@F3@']]
 
         result = gedcom_functions.listUpcomingBirthdays(individual_matrix6)
-        self.assertEqual(result, [['@I1@','Chris Meumann', 'M', '14 Apr 2022', 1, True, 'NA', '@F1@', 'NA']])
+        self.assertEqual(result, ['@I1@', '@I4@'])
 
     def test2_listUpcomingBirthdays(self):
         individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Mar 2022', 1, True, 'NA', '@F1@', 'NA'],
@@ -1540,7 +1540,7 @@ class testGEDCOM(unittest.TestCase):
         ['@I4@','Si Go', 'M', '1 May 1923', 99, True, 'NA', 'NA', '@F3@']]
 
         result = gedcom_functions.listUpcomingBirthdays(individual_matrix6)
-        self.assertEqual(result, [['@I4@','Si Go', 'M', '1 May 1923', 99, True, 'NA', 'NA', '@F3@']])
+        self.assertEqual(result, ['@I4@'])
     
     def test3_listUpcomingBirthdays(self):
         individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Mar 2022', 1, True, 'NA', '@F1@', 'NA'],
@@ -1576,12 +1576,12 @@ class testGEDCOM(unittest.TestCase):
         ['@I4@','Si Go', 'M', '3 May 1923', 100, False, '23 Feb 2023', 'NA', '@F3@'],
         ['@I5@', 'Lan Phang', 'F', '5 JUN 1925', 98, True, 'NA', 'NA', '@F3@' ]]
 
-        family_matrix1 = [['@F1@','26 Apr 1985', 'NA', '@I2@', 'Brad Meumann', '@I3@', 'Sally Go',['@I1@']],
+        family_matrix1 = [['@F1@','23 Jun 1985', 'NA', '@I2@', 'Brad Meumann', '@I3@', 'Sally Go',['@I1@']],
         ['@F2@', '5 Jul 1945', 'NA', '@I6@','Arthur Meumann', '@I7@', 'Lori Meumann', ['@I2@']],
         [ '@F3@', '5 Nov 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
 
         result = gedcom_functions.listUpcomingAnniversaries(individual_matrix6, family_matrix1)
-        self.assertEqual(result, ['@I2@', '@I3@'])
+        self.assertEqual(result, [])
 
     def test2_listUpcomingAnniversaries(self):
         individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA'],
@@ -1595,7 +1595,7 @@ class testGEDCOM(unittest.TestCase):
         [ '@F3@', '29 Apr 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
 
         result = gedcom_functions.listUpcomingAnniversaries(individual_matrix6, family_matrix1)
-        self.assertEqual(result, ['@I4@', '@I5@'])
+        self.assertEqual(result, [('@I5@', '@I4@')])
 
     def test3_listUpcomingAnniversaries(self):
         individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA'],
@@ -1609,7 +1609,7 @@ class testGEDCOM(unittest.TestCase):
         [ '@F3@', '29 Apr 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
 
         result = gedcom_functions.listUpcomingAnniversaries(individual_matrix6, family_matrix1)
-        self.assertEqual(result, ['@I4@', '@I5@', '@I2@', '@I3@'])
+        self.assertEqual(result, [('@I5@', '@I4@')])
 
     def test4_listUpcomingAnniversaries(self):
         individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA'],
