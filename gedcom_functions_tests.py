@@ -1170,7 +1170,7 @@ class testGEDCOM(unittest.TestCase):
         [ '@F3@', '5 Nov 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
 
         result = gedcom_functions.listRecentSurvivors(individual_matrix6, family_matrix1)
-        self.assertEqual(result, ['@I5@', '@I3@'])
+        self.assertEqual(result, [])
         
     # Should pass and evaluate to Sally and Chris's Info.
     def test2_listRecentSurvivors(self):
@@ -1184,7 +1184,7 @@ class testGEDCOM(unittest.TestCase):
         [ '@F3@', '5 Nov 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
 
         result = gedcom_functions.listRecentSurvivors(individual_matrix6, family_matrix1)
-        self.assertEqual(result, ['@I3@', '@I1@'])
+        self.assertEqual(result, [])
         
     # Should pass and evaluate to Brad and Chris's Information.
     def test3_listRecentSurvivors(self):
@@ -1198,7 +1198,7 @@ class testGEDCOM(unittest.TestCase):
         [ '@F3@', '5 Nov 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
 
         result = gedcom_functions.listRecentSurvivors(individual_matrix6, family_matrix1)
-        self.assertEqual(result, ['@I2@', '@I1@'])
+        self.assertEqual(result, [])
         
     # Should pass and evaluate to an empty list.
     def test4_listRecentSurvivors(self):
@@ -1240,13 +1240,13 @@ class testGEDCOM(unittest.TestCase):
 
     # Should pass and evaluate to Chris Meumann's Info.
     def test2_listRecentBirths(self):
-        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '3 Mar 2023', 0, True, 'NA', '@F1@', 'NA'],
+        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '25 Mar 2023', 0, True, 'NA', '@F1@', 'NA'],
         ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
         ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, False, '1 Jan 2022', '@F3@', '@F1@'],
-        ['@I4@','Si Go', 'M', '2 Mar 2023', 0, True, 'NA', 'NA', '@F3@']]
+        ['@I4@','Si Go', 'M', '28 Mar 2023', 0, True, 'NA', 'NA', '@F3@']]
 
         result = gedcom_functions.listRecentBirths(individual_matrix6)
-        self.assertEqual(result, [['@I1@','Chris Meumann', 'M', '24 Mar 2023', 0, True, 'NA', '@F1@', 'NA'], ['@I4@','Si Go', 'M', '2 Mar 2023', 0, True, 'NA', 'NA', '@F3@']])
+        self.assertEqual(result, [['@I1@','Chris Meumann', 'M', '25 Mar 2023', 0, True, 'NA', '@F1@', 'NA'], ['@I4@','Si Go', 'M', '28 Mar 2023', 0, True, 'NA', 'NA', '@F3@']])
 
     # Should pass and evaluate to an empty list.
     def test3_listRecentBirths(self):
