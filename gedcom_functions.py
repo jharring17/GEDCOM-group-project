@@ -291,7 +291,7 @@ def divorceBeforeDeath(fam_matrix, ind_matrix):
     return arr
     
 def birthBeforeMP(fam_matrix, ind_matrix):
-    arr=[]
+    arr = []
     for row in ind_matrix:
         ind_id = row[0]
         ind_name = row[1]
@@ -306,30 +306,83 @@ def birthBeforeMP(fam_matrix, ind_matrix):
     return arr
 
 # Checks that dates in fam_matrix and ind_matrix occur only before the current date. 
-# TODO: preform testing and add to the gedcom_functions_tests.py file.
 def datesBeforeCurrent(fam_matrix, ind_matrix):
     arr = []
-    current_date = date.today()
+    current_date = datetime.now()
+    # Iterates the individual array.
     for row in ind_matrix:
         ind_id = row[0]
+        # Checks if the value for death date is NA.
         birth_date = parser.parse(row[3])
-        death_date = parser.parse(row[6])
-        if (birth_date > current_date or death_date > current_date):
-            arr.append("Error: " + ind_id + " was born after current date.")
-        if (death_date > current_date):
-            arr.append("Error: " + ind_id + " died after current date.")
+        if (birth_date > current_date):
+                arr.append("Error: " + ind_id + " was born after current date.")
+        # Skips death_Date check if person is alive.
+        if (row[6] == 'NA'):
+            pass
+        else:
+            death_date = parser.parse(row[6])
+            # Checks the validity of dates.
+            if (death_date > current_date):
+                arr.append("Error: " + ind_id + " died after current date.")
+    # Iterates the family array.
     for row in fam_matrix:
         husband_id = row[3]
         wife_id = row[5]
-        marriage_date = parser.parse(row[1])
-        if (marriage_date > current_date):
-            arr.append("Error: " + husband_id + " " + wife_id + " were married after current date.")
+        # Checks if the value for married or divorced date is NA.
+        if (row[1] == 'NA'):
+            pass
+        else:
+            marriage_date = parser.parse(row[1])
+            if (marriage_date > current_date):
+                arr.append("Error: " + husband_id + " " + wife_id + " were married after current date.")    
+        if (row[2] == 'NA'):
+            pass
+        else:
+            divorce_date = parser.parse(row[2])
+            if (divorce_date > current_date):
+                arr.append("Error: " + husband_id + " " + wife_id + " were divorced after current date.")
     return arr
 
+# Checks that no one is married before they were fourteen.
 def marriageAfterFourteen(fam_matrix, ind_matrix):
-    # Get the marriage date.
-    # Get the date each individual was born.
-    # Take the difference of the dates.
-    # Determine if either person was younger than 14 when married.
-    # If yes, append to result array, else pass.
-    return
+    arr = []
+    for row in fam_matrix:
+        marriage_date = parser.parse(row[1])
+        husband_id = row[3]
+        wife_id = row[5]
+        for attribute in ind_matrix:
+            birth_date = parser.parse(attribute[3])
+            if (attribute[0] == husband_id):
+                date_diff = marriage_date - birth_date
+                date_diff = int(str(date_diff).split(" ")[0])
+                if (date_diff < 5110):
+                    arr.append("Error: " + attribute[1] + " was married before they were 14.")
+            elif (attribute[0] == wife_id):
+                date_diff = marriage_date - birth_date
+                date_diff = int(str(date_diff).split(" ")[0])
+                if (date_diff < 5110):
+                    arr.append("Error: " + attribute[1] + " was married before they were 14.")
+            else:
+                pass
+    return arr
+
+def sibling15(fam_matrix):
+    for row in fam_matrix:
+        if (row[7]!= 'NA') and (len(row[7]) >= 15):
+            return False
+    return True
+
+# Siblings should not marry
+# Returns true if no siblings are married to eachother
+# Returns false if sibling is married to another sibling
+def marriedSiblings(fam_matrix):
+    for row in fam_matrix:
+        if row[7] != 'NA':
+            siblings = row[7]
+            if len(siblings) >= 2:
+                for rower in fam_matrix:
+                    hus = rower[3]
+                    wife = rower[5]
+                    if (hus in siblings) and (wife in siblings):
+                        return False
+    return True

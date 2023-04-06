@@ -329,3 +329,22 @@ if result == []:
     print("No one was born, died, or married after current date.")
 else: 
     print(result)
+
+# marriageAfterFourteen
+result = marriageAfterFourteen(family, individual)
+if result == []:
+    print("No one was married before they were fourteen.")
+else: 
+    print(result)
+
+# sibling15
+if sibling15(family) == False:
+    print("There are more than 15 siblings in this family.")
+else:
+    print("There are less than 15 siblings in this family.")
+
+# marriedSiblings
+if marriedSiblings(family) == False:
+    print("Sibling married to sibling.")
+else:
+    print("No siblings are married to eachother.")
