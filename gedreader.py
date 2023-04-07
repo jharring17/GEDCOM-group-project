@@ -348,3 +348,31 @@ if marriedSiblings(family) == False:
     print("Sibling married to sibling.")
 else:
     print("No siblings are married to eachother.")
+
+# listUpcomingBirthdays
+result = listUpcomingBirthdays(individual)
+if result == []:
+    print('There are no upcoming birthdays.')
+else:
+    print(result)
+
+# listUpcomingBirthdays
+result = listUpcomingAnniversaries(individual, family)
+if result == []:
+    print('There are no upcoming anniversaries.')
+else:
+    print(result)
+
+# birthBeforeDP
+result = birthBeforeDP(family, individual)
+if result == []:
+    print('There are no birthBeforeDP errors.')
+else: 
+    print(result)
+
+# no_bigamy
+result = no_bigamy(family, individual)
+if result == []:
+    print('There is no bigamy.')
+else:
+    print(result)

@@ -386,3 +386,98 @@ def marriedSiblings(fam_matrix):
                     if (hus in siblings) and (wife in siblings):
                         return False
     return True
+
+#Lists the IDs of all living people in a GEDCOM file whose birthdays occur in the next 30 days
+def listUpcomingBirthdays(ind_matrix):
+    near_birthday = []
+    for row in ind_matrix:
+        if row[5] == True:
+            today = date.today()
+            birthday = datetime.strptime(row[3], '%d %b %Y')
+            next_birthday = birthday.replace(year=today.year)
+            if next_birthday < datetime.combine(today, datetime.min.time()):
+                next_birthday = next_birthday.replace(year=today.year + 1)
+            if (next_birthday - datetime.combine(today, datetime.min.time())).days < 31:
+                near_birthday.append(row[0])
+    return near_birthday
+
+#Lists the IDs of all living couples in a GEDCOM file 
+# whose marriage anniversaries occur in the next 30 days
+def listUpcomingAnniversaries(ind_matrix, fam_matrix):
+    upcoming_anniversaries = []
+    for row in ind_matrix:
+        if row[6] != 'NA':
+            person_ID = row[0]
+            # Get spouse to compare marriage day
+            for r in fam_matrix:
+                if person_ID == r[3]:
+                    today = date.today()
+                    anni_date = datetime.strptime(r[1], '%d %b %Y')
+                    next_anni = anni_date.replace(year=today.year)
+                    if next_anni < datetime.combine(today, datetime.min.time()):
+                        next_anni = next_anni.replace(year=today.year + 1)
+                        # Check if current date is later than anniversary date for current year
+                        if today > next_anni:
+                            next_anni = next_anni.replace(year=next_anni.year + 1)
+                    if (next_anni - datetime.combine(today, datetime.min.time())).days < 31:
+                        upcoming_anniversaries.append((r[5], r[3]))
+                elif person_ID == r[5]:
+                    today = date.today()
+                    anni_date = datetime.strptime(r[1], '%d %b %Y')
+                    next_anni = anni_date.replace(year=today.year)
+                    if next_anni < datetime.combine(today, datetime.min.time()):
+                        next_anni = next_anni.replace(year=today.year + 1)
+                        # Check if current date is later than anniversary date for current year
+                        if today > next_anni:
+                            next_anni = next_anni.replace(year=next_anni.year + 1)
+                    if (next_anni - datetime.combine(today, datetime.min.time())).days < 31:
+                        upcoming_anniversaries.append((r[3], r[5]))
+    return upcoming_anniversaries
+
+def birthBeforeDP(fam_matrix, ind_matrix):
+    arr=[]
+    for row in ind_matrix:
+        ind_id = row[0]
+        ind_name = row[1]
+        birth_date = parser.parse(row[3])
+        for rowr in fam_matrix:
+            if ind_id in rowr[7]:
+                par1_id = rowr[3]
+                par2_id = rowr[5]
+                for rrow in ind_matrix:
+                    if rrow[0] == par1_id:
+                        if rrow[6] == 'NA':
+                            pass
+                        else:
+                            death_date = parser.parse(rrow[6])
+                            if death_date > birth_date:
+                                continue
+                            else: 
+                                arr.append(ind_name + " was born before after their parent(s) died.")
+                        
+                    if rrow[0] == par2_id:
+                        if rrow[6] == 'NA':
+                            pass
+                        else:
+                            death_date = parser.parse(rrow[6])
+                            if (death_date > birth_date):
+                                continue
+                            else: arr.append(ind_name + " was born before after their parent(s) died.")
+    return arr
+
+def no_bigamy(fam_matrix, ind_matrix):
+    arr = []
+    for row in fam_matrix:
+        if len(row[3])>1:
+            ind_id = row[5]
+            for rowr in ind_matrix:
+                if rowr[0] == ind_id:
+                    ind_name = rowr[1]
+                    arr.append(ind_name + " was married twice." )
+        if len(row[5])>1:
+            ind_id = row[3]
+            for rowr in ind_matrix:
+                if rowr[0] == ind_id:
+                    ind_name = rowr[1]
+                    arr.append(ind_name + " was married twice." )
+        return arr
