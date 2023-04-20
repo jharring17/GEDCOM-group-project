@@ -622,3 +622,28 @@ def correctGender(ind_matrix, fam_matrix):
                 ind_name = r[1]
                 arr.append(ind_name + " is not female but labeled as wife.")
     return arr
+
+def includePartialDates(ind_matrix, fam_matrix): 
+    for row in ind_matrix:
+        birth_date = row[3]
+        birth_date = datetime.strptime(birth_date, "%d %b %Y")
+        birth_date = birth_date.strftime('%b %Y')
+        row[3] = birth_date
+        
+        if row[6] != 'NA':
+            death_date = row[6]
+            death_date = datetime.strptime(death_date, "%d %b %Y")
+            death_date = death_date.strftime('%b %Y')
+            row[6] = death_date
+    for r in fam_matrix:
+        marriage_date = r[1]
+        marriage_date = datetime.strptime(marriage_date, "%d %b %Y")
+        marriage_date = marriage_date.strftime('%b %Y')
+        r[1] = marriage_date
+
+        if r[2] != 'NA':
+            divorce_date = r[2]
+            divorce_date = datetime.strptime(divorce_date, "%d %b %Y")
+            divorce_date = divorce_date.strftime('%b %Y')
+            r[2] = divorce_date
+    return ind_matrix, fam_matrix
