@@ -2240,6 +2240,62 @@ class testGEDCOM(unittest.TestCase):
         result = gedcom_functions.includePartialDates(individual_matrix6, family_matrix1)
         self.assertEqual(result, result)
 
+    def test2_includePartialDates(self):
+        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA'],
+        ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
+        ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, True, 'NA', '@F3@', '@F1@'],
+        ['@I4@','Si Go', 'M', '3 May 1923', 100, False, '23 Feb 2023', 'NA', '@F3@'],
+        ['@I5@', 'Lan Phang', 'F', '5 Jun 1925', 98, True, 'NA', 'NA', '@F3@' ]]
+
+        family_matrix1 = [['@F1@','23 Nov 1985', 'NA', '@I2@', 'Brad Meumann', '@I3@', 'Sally Go',['@I1@']],
+        ['@F2@', '25 Sep 1945', 'NA', '@I6@','Arthur Meumann', '@I7@', 'Lori Meumann', ['@I2@']],
+        [ '@F3@', '29 Dec 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
+
+        result = gedcom_functions.includePartialDates(individual_matrix6, family_matrix1)
+        self.assertEqual(result, result)
+
+    def test3_includePartialDates(self):
+        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA'],
+        ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
+        ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, True, 'NA', '@F3@', '@F1@'],
+        ['@I4@','Si Go', 'M', '3 May 1923', 100, False, '23 Feb 2023', 'NA', '@F3@'],
+        ['@I5@', 'Lan Phang', 'F', '5 Jun 1925', 98, True, 'NA', 'NA', '@F3@' ]]
+
+        family_matrix1 = [['@F1@','23 Nov 1985', 'NA', '@I2@', 'Brad Meumann', '@I3@', 'Sally Go',['@I1@']],
+        ['@F2@', '25 Sep 1945', 'NA', '@I6@','Arthur Meumann', '@I7@', 'Lori Meumann', ['@I2@']],
+        [ '@F3@', '29 Dec 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
+
+        result = gedcom_functions.includePartialDates(individual_matrix6, family_matrix1)
+        self.assertEqual(result, result)
+
+    def test4_includePartialDates(self):
+        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA'],
+        ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
+        ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, True, 'NA', '@F3@', '@F1@'],
+        ['@I4@','Si Go', 'M', '3 May 1923', 100, False, '23 Feb 2023', 'NA', '@F3@'],
+        ['@I5@', 'Lan Phang', 'F', '5 Jun 1925', 98, True, 'NA', 'NA', '@F3@' ]]
+
+        family_matrix1 = [['@F1@','23 Nov 1985', 'NA', '@I2@', 'Brad Meumann', '@I3@', 'Sally Go',['@I1@']],
+        ['@F2@', '25 Sep 1945', 'NA', '@I6@','Arthur Meumann', '@I7@', 'Lori Meumann', ['@I2@']],
+        [ '@F3@', '29 Dec 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
+
+        result = gedcom_functions.includePartialDates(individual_matrix6, family_matrix1)
+        self.assertEqual(result, result)
+    
+    def test5_includePartialDates(self):
+        individual_matrix6 = [['@I1@','Chris Meumann', 'M', '14 Oct 2002', 20, True, 'NA', '@F1@', 'NA'],
+        ['@I2@', 'Brad Meumann', 'M', '28 Jun 1961', 61, True, 'NA', '@F2@', '@F1@'],
+        ['@I3@', 'Sally Go', 'F', '8 Feb 1961', 62, True, 'NA', '@F3@', '@F1@'],
+        ['@I4@','Si Go', 'M', '3 May 1923', 100, False, '23 Feb 2023', 'NA', '@F3@'],
+        ['@I5@', 'Lan Phang', 'F', '5 Jun 1925', 98, True, 'NA', 'NA', '@F3@' ]]
+
+        family_matrix1 = [['@F1@','23 Nov 1985', 'NA', '@I2@', 'Brad Meumann', '@I3@', 'Sally Go',['@I1@']],
+        ['@F2@', '25 Sep 1945', 'NA', '@I6@','Arthur Meumann', '@I7@', 'Lori Meumann', ['@I2@']],
+        [ '@F3@', '29 Dec 1950', 'NA', '@I4@', 'Si Go', '@I5@', 'Lan Phang', ['@I3@']]]
+
+        result = gedcom_functions.includePartialDates(individual_matrix6, family_matrix1)
+        self.assertEqual(result, result)
+
 
 
 # Enables us to call test file like python file.
