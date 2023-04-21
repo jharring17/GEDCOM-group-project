@@ -942,21 +942,6 @@ class testGEDCOM(unittest.TestCase):
         self.assertFalse(result)
 
     def test1Less5Birt(self):
-        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jck Dance', '@I11@', 'Jane Doe', 'NA'],
-        ['@F2@', '10 Feb 1995', 'NA', '@I23@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
-        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I33@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
-        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I9@', 'Eric Chen', '@I3@', 'Linda Chen', '@I11@'],
-        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
-        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
-        ['@F7@', '22 Jul 2009', 'NA', '@I3@', 'Richard Lee', '@I2@', 'Hannah Kim', 'NA'],
-        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I3@'],
-        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I2@', '@I3@', '@I4@']],
-        ['@F10@', '30 Oct 2010', 'NA', '@I9@', 'Eric Chen', '@I2@', 'Jane Doe', 'NA']]
-
-        result = gedcom_functions.less5Birt(ind_m, fam_m)
-        self.assertTrue(result)
-
-    def test1Less5Birt(self):
         ind_m = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 3, False, 'NA', '@F5@', 'NA'],
         ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, False, 'NA', 'NA', 'I9'],
         ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@I10'],
