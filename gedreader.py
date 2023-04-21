@@ -287,6 +287,8 @@ if marriedSiblings(family) == False:
 else:
     print("No siblings are married to eachother")
 
+print("There are 5 or less twin siblings: " + str(less5Birt(individual, family)))
+print(listMulBirt(individual, family)) # will list all multiple births (none in my family)
 
 
 
