@@ -188,6 +188,60 @@ def marriedSiblings(fam_matrix):
                         return False
     return True
 
+# List Multiple Births
+# List all multiple births in a GEDCOM file
+# Multiple births - siblings born on same day
+# Returns a list of lists where each sublist is siblings born on the same day
+def listMulBirt(ind_matrix, fam_matrix):
+    family_bdays = {}
+    for fam in fam_matrix:
+        if fam[7] != 'NA':
+            fam_id = fam[0]
+            siblings = fam[7]
+            family_bdays[fam_id] = {}
+            for sib in siblings:
+                for person in ind_matrix:
+                    if person[0] == sib:
+                        bday = person[3]
+                        if bday not in family_bdays[fam_id]:
+                            family_bdays[fam_id][bday] = [sib]
+                        else:
+                            family_bdays[fam_id][bday].append(sib)
+    res = []
+    for fam_id, bdays in family_bdays.items():
+        for bday in bdays:
+            mems = bdays[bday]
+            if len(mems) > 1:
+                res.append(mems)
+    return res 
+
+
+# Multiple Births <= 5
+# No more than five siblings should be born at the same time
+# Multiple births - siblings born on same day
+# Returns false if over 5 multiple births, true if otherwise
+def less5Birt(ind_matrix, fam_matrix):
+    for row in fam_matrix:
+        siblings = row[7]
+        if row[7] != 'NA' and len(siblings) > 5:
+            birth_arr = [None] * len(siblings)
+            date_index = 0
+            for element in siblings:
+                for rower in ind_matrix:
+                    if element == rower[0]:
+                        birth_arr[date_index] = rower[3]
+                date_index += 1
+            counter = {}
+            for birthday in birth_arr:
+                if birthday in counter:
+                    counter[birthday] += 1
+                else:
+                    counter[birthday] = 1
+            for item, count in counter.items():
+                if count > 5:
+                    return False
+    return True
+
 # Validates that a person was married before divorce
 def marriageBeforeDivorce(family, individual):
     partnerOneID = family[3]
