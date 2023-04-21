@@ -2296,8 +2296,588 @@ class testGEDCOM(unittest.TestCase):
         result = gedcom_functions.includePartialDates(individual_matrix6, family_matrix1)
         self.assertEqual(result, result)
 
+    def test1_uniqueID(self):
+        i_mat19 = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 35, True, '10 Feb 1990', '@F5@', '@F2@'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Robert Johnson', 'Male', '17 Oct 1977', 44, False, '13 October 2015', 'NA', '@F4@'],
+        ['@I5@', 'David Lee', 'Male', '29 Apr 2004', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Jack Dance', 'Female', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I7@', 'Mike Johnson', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Karen Lee', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+        ['@I9@', 'Linda Chen', 'Female', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+
+        f_mat19 = [['@F1@', '18 Jan 2070', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1980', '10 Feb 1989', '@I1@', 'John Smith', '@10@', 'Stephanie Wong', 'NA'],
+        ['@F3@', '07 Mar 2002', '08 Mar 2002', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I5@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I9@', 'Linda Chen', '@F2@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@F3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Andrew Kim', '@I20@', 'Michelle Park', 'NA']]
+        result = gedcom_functions.uniqueID(i_mat19, f_mat19)
+        self.assertEqual(result, [])
+    
+    def test2_uniqueID(self):
+        i_mat19 = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 35, True, '10 Feb 1990', '@F5@', '@F2@'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I2@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Robert Johnson', 'Male', '17 Oct 1977', 44, False, '13 October 2015', 'NA', '@F4@'],
+        ['@I5@', 'David Lee', 'Male', '29 Apr 2004', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Jack Dance', 'Female', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I7@', 'Mike Johnson', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Karen Lee', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+        ['@I9@', 'Linda Chen', 'Female', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+
+        f_mat19 = [['@F1@', '18 Jan 2070', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1980', '10 Feb 1989', '@I1@', 'John Smith', '@10@', 'Stephanie Wong', 'NA'],
+        ['@F3@', '07 Mar 2002', '08 Mar 2002', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I5@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I9@', 'Linda Chen', '@F2@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@F3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Andrew Kim', '@I20@', 'Michelle Park', 'NA']]
+        result = gedcom_functions.uniqueID(i_mat19, f_mat19)
+        self.assertEqual(result, ['Error: @I2@ is not a unique individual ID.','Error: @I2@ is not a unique individual ID.'])
+
+    def test3_uniqueID(self):
+        i_mat19 = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 35, True, '10 Feb 1990', '@F5@', '@F2@'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Robert Johnson', 'Male', '17 Oct 1977', 44, False, '13 October 2015', 'NA', '@F4@'],
+        ['@I5@', 'David Lee', 'Male', '29 Apr 2004', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Jack Dance', 'Female', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I7@', 'Mike Johnson', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Karen Lee', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+        ['@I9@', 'Linda Chen', 'Female', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+
+        f_mat19 = [['@F1@', '18 Jan 2070', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1980', '10 Feb 1989', '@I1@', 'John Smith', '@10@', 'Stephanie Wong', 'NA'],
+        ['@F2@', '07 Mar 2002', '08 Mar 2002', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I5@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I9@', 'Linda Chen', '@F2@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@F3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Andrew Kim', '@I20@', 'Michelle Park', 'NA']]
+        result = gedcom_functions.uniqueID(i_mat19, f_mat19)
+        self.assertEqual(result, ['Error: @F2@ is not a unique family ID.','Error: @F2@ is not a unique family ID.'])
+
+    def test4_uniqueID(self):
+        i_mat19 = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 35, True, '10 Feb 1990', '@F5@', '@F2@'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Robert Johnson', 'Male', '17 Oct 1977', 44, False, '13 October 2015', 'NA', '@F4@'],
+        ['@I4@', 'David Lee', 'Male', '29 Apr 2004', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Jack Dance', 'Female', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I7@', 'Mike Johnson', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Karen Lee', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+        ['@I9@', 'Linda Chen', 'Female', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+
+        f_mat19 = [['@F1@', '18 Jan 2070', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1980', '10 Feb 1989', '@I1@', 'John Smith', '@10@', 'Stephanie Wong', 'NA'],
+        ['@F3@', '07 Mar 2002', '08 Mar 2002', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I5@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I9@', 'Linda Chen', '@F2@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F6@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@F3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Andrew Kim', '@I20@', 'Michelle Park', 'NA']]
+        result = gedcom_functions.uniqueID(i_mat19, f_mat19)
+        self.assertEqual(result, ['Error: @I4@ is not a unique individual ID.','Error: @I4@ is not a unique individual ID.','Error: @F6@ is not a unique family ID.', 'Error: @F6@ is not a unique family ID.'])
+
+    def test5_uniqueID(self):
+        i_mat19 = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 35, True, '10 Feb 1990', '@F5@', '@F2@'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Robert Johnson', 'Male', '17 Oct 1977', 44, False, '13 October 2015', 'NA', '@F4@'],
+        ['@I5@', 'David Lee', 'Male', '29 Apr 2004', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Jack Dance', 'Female', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I7@', 'Mike Johnson', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Karen Lee', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+        ['@I10@', 'Linda Chen', 'Female', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+
+        f_mat19 = [['@F1@', '18 Jan 2070', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1980', '10 Feb 1989', '@I1@', 'John Smith', '@10@', 'Stephanie Wong', 'NA'],
+        ['@F3@', '07 Mar 2002', '08 Mar 2002', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I5@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I9@', 'Linda Chen', '@F2@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@F3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Andrew Kim', '@I20@', 'Michelle Park', 'NA']]
+        result = gedcom_functions.uniqueID(i_mat19, f_mat19)
+        self.assertEqual(result, ['Error: @I10@ is not a unique individual ID.', 'Error: @I10@ is not a unique individual ID.'])
+
+    def test1_listRecentDeaths(self):
+        i_mat19 = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 35, True, '10 Feb 1990', '@F5@', '@F2@'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Robert Johnson', 'Male', '17 Oct 1977', 44, False, '13 October 2015', 'NA', '@F4@'],
+        ['@I5@', 'David Lee', 'Male', '29 Apr 2004', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Jack Dance', 'Female', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I7@', 'Mike Johnson', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Karen Lee', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+        ['@I10@', 'Linda Chen', 'Female', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+        result = gedcom_functions.listRecentDeaths(i_mat19)
+        self.assertEqual(result, [])
+
+    def test2_listRecentDeaths(self):
+        i_mat19 = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 35, True, '10 Feb 1990', '@F5@', '@F2@'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Robert Johnson', 'Male', '17 Oct 1977', 44, False, '13 October 2015', 'NA', '@F4@'],
+        ['@I5@', 'David Lee', 'Male', '29 Apr 2004', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Jack Dance', 'Female', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I7@', 'Mike Johnson', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Karen Lee', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+        ['@I10@', 'Linda Chen', 'Female', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+        result = gedcom_functions.listRecentDeaths(i_mat19)
+        self.assertEqual(result, [])
+
+    def test3_listRecentDeaths(self):
+        i_mat19 = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 35, True, '10 Feb 1990', '@F5@', '@F2@'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Robert Johnson', 'Male', '17 Oct 1977', 44, False, '13 October 2015', 'NA', '@F4@'],
+        ['@I5@', 'David Lee', 'Male', '29 Apr 2004', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Jack Dance', 'Female', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I7@', 'Mike Johnson', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Karen Lee', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+        ['@I10@', 'Linda Chen', 'Female', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+        result = gedcom_functions.listRecentDeaths(i_mat19)
+        self.assertEqual(result, [])
+
+    def test4_listRecentDeaths(self):
+        i_mat19 = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 35, True, '10 Feb 1990', '@F5@', '@F2@'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Robert Johnson', 'Male', '17 Oct 1977', 44, False, '13 October 2015', 'NA', '@F4@'],
+        ['@I5@', 'David Lee', 'Male', '29 Apr 2004', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Jack Dance', 'Female', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I7@', 'Mike Johnson', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Karen Lee', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+        ['@I10@', 'Linda Chen', 'Female', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+        result = gedcom_functions.listRecentDeaths(i_mat19)
+        self.assertEqual(result, [])
+
+    def test5_listRecentDeaths(self):
+        i_mat19 = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 35, True, '10 Feb 1990', '@F5@', '@F2@'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Robert Johnson', 'Male', '17 Oct 1977', 44, False, '13 October 2015', 'NA', '@F4@'],
+        ['@I5@', 'David Lee', 'Male', '29 Apr 2004', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Jack Dance', 'Female', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I7@', 'Mike Johnson', 'Male', '11 Sep 1990', 31, True, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Karen Lee', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+        ['@I10@', 'Linda Chen', 'Female', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+        result = gedcom_functions.listRecentDeaths(i_mat19)
+        self.assertEqual(result, [])
+
+    def test1Less5Birt(self):
+        ind_m = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 3, False, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, False, 'NA', 'NA', 'I9'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@I10'],
+        ['@I4@', 'Mary Brown', 'Female', '17 Oct 1977', 44, False, 'NA', 'NA', 'NA'],
+        ['@I5@', 'Daniel Kim', 'Male', '29 Apr 1998', 23, False, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Samantha Kim', 'Female', '12 Jul 2001', 22, False, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'Mike Johnson', 'Male', '11 Sep 1990', 31, False, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Andrew Kim', 'Female', '06 Feb 1975', 48, False, '12 Dec 2021', '@F3@', '@F5@'],
+        ['@I9@', 'Jack Dance', 'Male', '27 Nov 1989', 32, False, 'NA', '@F5@', '@F1@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '20 May 1995', 32, False, 'NA', 'NA', 'NA']]
+
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I14@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@F3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I3@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I3@', 'Erica Man', '@I19@', 'Karen Wu', 'NA']]
+
+        result = gedcom_functions.less5Birt(ind_m, fam_m)
+        self.assertTrue(result)
+
+    def test2Less5Birt(self):
+        ind_m = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 3, False, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Jane Doe', 'Female', '23 Dec 1985', 29, False, 'NA', 'NA', 'I9'],
+        ['@I3@', 'Bob Johnson', 'Male', '23 Dec 1985', 42, False, '05 Jan 2022', '@F1@', '@I10'],
+        ['@I4@', 'Mary Brown', 'Female', '23 Dec 1985', 44, False, 'NA', 'NA', 'NA'],
+        ['@I5@', 'Daniel Kim', 'Male', '23 Dec 1985', 23, False, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Samantha Kim', 'Female', '23 Dec 1985', 22, False, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'Mike Johnson', 'Male', '23 Dec 1985', 31, False, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Andrew Kim', 'Female', '06 Feb 1975', 48, False, '12 Dec 2021', '@F3@', '@F5@'],
+        ['@I9@', 'Jack Dance', 'Male', '27 Nov 1989', 32, False, 'NA', '@F5@', '@F1@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '20 May 1995', 32, False, 'NA', 'NA', 'NA']]
+
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I14@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I33@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I1@', '@I2@', '@I3@', '@I4@', '@I5@', '@I6@', '@I7@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I3@', 'Erica Man', '@I19@', 'Karen Wu', 'NA']]
+
+        result = gedcom_functions.less5Birt(ind_m, fam_m)
+        self.assertFalse(result)
+
+    def test3Less5Birt(self):
+        ind_m = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 3, False, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Jane Doe', 'Female', '23 Dec 1985', 29, False, 'NA', 'NA', 'I9'],
+        ['@I3@', 'Bob Johnson', 'Male', '23 Dec 1985', 42, False, '05 Jan 2022', '@F1@', '@I10'],
+        ['@I4@', 'Mary Brown', 'Female', '23 Dec 1985', 44, False, 'NA', 'NA', 'NA'],
+        ['@I5@', 'Daniel Kim', 'Male', '23 Dec 1985', 23, False, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Samantha Kim', 'Female', '23 Dec 1985', 22, False, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'Mike Johnson', 'Male', '27 Nov 1989', 31, False, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Andrew Kim', 'Female', '06 Feb 1975', 48, False, '12 Dec 2021', '@F3@', '@F5@'],
+        ['@I9@', 'Jack Dance', 'Male', '27 Nov 1989', 32, False, 'NA', '@F5@', '@F1@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '20 May 1995', 32, False, 'NA', 'NA', 'NA']]
+
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I14@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I33@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I1@', '@I2@', '@I3@', '@I4@', '@I5@', '@I6@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I3@', 'Erica Man', '@I19@', 'Karen Wu', 'NA']]
+
+        result = gedcom_functions.less5Birt(ind_m, fam_m)
+        self.assertFalse(result)
+
+    def test4Less5Birt(self):
+        ind_m = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 3, False, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Jane Doe', 'Female', '23 Dec 1985', 29, False, 'NA', 'NA', 'I9'],
+        ['@I3@', 'Bob Johnson', 'Male', '23 Dec 1985', 42, False, '05 Jan 2022', '@F1@', '@I10'],
+        ['@I4@', 'Mary Brown', 'Female', '23 Dec 1985', 44, False, 'NA', 'NA', 'NA'],
+        ['@I5@', 'Daniel Kim', 'Male', '23 Dec 1985', 23, False, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Samantha Kim', 'Female', '23 Dec 1985', 22, False, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'Mike Johnson', 'Male', '27 Nov 1989', 31, False, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Andrew Kim', 'Female', '06 Feb 1975', 48, False, '12 Dec 2021', '@F3@', '@F5@'],
+        ['@I9@', 'Jack Dance', 'Male', '27 Nov 1989', 32, False, 'NA', '@F5@', '@F1@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '20 May 1995', 32, False, 'NA', 'NA', 'NA']]
+
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I14@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I33@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I1@', '@I2@', '@I3@', '@I4@', '@I5@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I3@', 'Erica Man', '@I19@', 'Karen Wu', 'NA']]
+
+        result = gedcom_functions.less5Birt(ind_m, fam_m)
+        self.assertTrue(result)
+
+    def test5Less5Birt(self):
+        ind_m = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 3, False, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Jane Doe', 'Female', '23 Dec 1985', 29, False, 'NA', 'NA', 'I9'],
+        ['@I3@', 'Bob Johnson', 'Male', '23 Dec 1985', 42, False, '05 Jan 2022', '@F1@', '@I10'],
+        ['@I4@', 'Mary Brown', 'Female', '23 Dec 1985', 44, False, 'NA', 'NA', 'NA'],
+        ['@I5@', 'Daniel Kim', 'Male', '23 Dec 1985', 23, False, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Samantha Kim', 'Female', '27 Nov 1989', 22, False, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'Mike Johnson', 'Male', '27 Nov 1989', 31, False, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Andrew Kim', 'Female', '06 Feb 1975', 48, False, '12 Dec 2021', '@F3@', '@F5@'],
+        ['@I9@', 'Jack Dance', 'Male', '27 Nov 1989', 32, False, 'NA', '@F5@', '@F1@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '20 May 1995', 32, False, 'NA', 'NA', 'NA']]
+
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I14@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I33@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I1@', '@I2@', '@I3@', '@I4@', '@I5@', '@I6@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I3@', 'Erica Man', '@I19@', 'Karen Wu', 'NA']]
+
+        result = gedcom_functions.less5Birt(ind_m, fam_m)
+        self.assertTrue(result)
 
 
+    def test1listMulBirt(self):
+        ind_m = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 3, False, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Jane Doe', 'Female', '23 Dec 1985', 29, False, 'NA', 'NA', 'I9'],
+        ['@I3@', 'Bob Johnson', 'Male', '23 Dec 1985', 42, False, '05 Jan 2022', '@F1@', '@I10'],
+        ['@I4@', 'Mary Brown', 'Female', '23 Dec 1985', 44, False, 'NA', 'NA', 'NA'],
+        ['@I5@', 'Daniel Kim', 'Male', '23 Dec 1985', 23, False, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Samantha Kim', 'Female', '27 Nov 1989', 22, False, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'Mike Johnson', 'Male', '27 Nov 1989', 31, False, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Andrew Kim', 'Female', '06 Feb 1975', 48, False, '12 Dec 2021', '@F3@', '@F5@'],
+        ['@I9@', 'Jack Dance', 'Male', '27 Nov 1989', 32, False, 'NA', '@F5@', '@F1@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '20 May 1995', 32, False, 'NA', 'NA', 'NA']]
+
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I14@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I33@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I1@', '@I2@', '@I3@', '@I4@', '@I5@', '@I6@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I3@', 'Erica Man', '@I19@', 'Karen Wu', 'NA']]
+
+        result = gedcom_functions.listMulBirt(ind_m, fam_m)
+        self.assertEqual(result, [['@I1@', '@I2@', '@I3@', '@I4@', '@I5@']])
+
+    def test2listMulBirt(self):
+        ind_m = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 3, False, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Jane Doe', 'Female', '23 Dec 1985', 29, False, 'NA', 'NA', 'I9'],
+        ['@I3@', 'Bob Johnson', 'Male', '23 Dec 1985', 42, False, '05 Jan 2022', '@F1@', '@I10'],
+        ['@I4@', 'Mary Brown', 'Female', '23 Dec 1985', 44, False, 'NA', 'NA', 'NA'],
+        ['@I5@', 'Daniel Kim', 'Male', '23 Dec 1985', 23, False, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Samantha Kim', 'Female', '23 Dec 1985', 22, False, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'Mike Johnson', 'Male', '27 Nov 1989', 31, False, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Andrew Kim', 'Female', '06 Feb 1975', 48, False, '12 Dec 2021', '@F3@', '@F5@'],
+        ['@I9@', 'Jack Dance', 'Male', '27 Nov 1989', 32, False, 'NA', '@F5@', '@F1@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '20 May 1995', 32, False, 'NA', 'NA', 'NA']]
+
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I14@', 'Linda Chen', '@I11@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I33@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I1@', '@I2@', '@I3@', '@I4@', '@I5@', '@I6@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I3@', 'Erica Man', '@I19@', 'Karen Wu', 'NA']]
+
+        result = gedcom_functions.listMulBirt(ind_m, fam_m)
+        self.assertEqual(result, [['@I1@', '@I2@', '@I3@', '@I4@', '@I5@', '@I6@']])
+
+    def test3listMulBirt(self):
+        ind_m = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 3, False, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Jane Doe', 'Female', '23 Dec 1985', 29, False, 'NA', 'NA', 'I9'],
+        ['@I3@', 'Bob Johnson', 'Male', '23 Dec 1985', 42, False, '05 Jan 2022', '@F1@', '@I10'],
+        ['@I4@', 'Mary Brown', 'Female', '23 Dec 1985', 44, False, 'NA', 'NA', 'NA'],
+        ['@I5@', 'Daniel Kim', 'Male', '23 Dec 1985', 23, False, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Samantha Kim', 'Female', '23 Dec 1985', 22, False, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'Mike Johnson', 'Male', '27 Nov 1989', 31, False, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Andrew Kim', 'Female', '27 Nov 1989', 48, False, '12 Dec 2021', '@F3@', '@F5@'],
+        ['@I9@', 'Jack Dance', 'Male', '27 Nov 1989', 32, False, 'NA', '@F5@', '@F1@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '27 Nov 1989', 32, False, 'NA', 'NA', 'NA']]
+
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I14@', 'Linda Chen', ['@I7@', '@I8@', '@I9@', '@I10@']],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I33@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I1@', '@I2@', '@I3@', '@I4@', '@I5@', '@I6@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I3@', 'Erica Man', '@I19@', 'Karen Wu', 'NA']]
+
+        result = gedcom_functions.listMulBirt(ind_m, fam_m)
+        self.assertEqual(result, [['@I7@', '@I8@', '@I9@', '@I10@'], ['@I1@', '@I2@', '@I3@', '@I4@', '@I5@', '@I6@']])
+
+    def test4listMulBirt(self):
+        ind_m = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 3, False, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Jane Doe', 'Female', '23 Dec 1985', 29, False, 'NA', 'NA', 'I9'],
+        ['@I3@', 'Bob Johnson', 'Male', '23 Dec 1985', 42, False, '05 Jan 2022', '@F1@', '@I10'],
+        ['@I4@', 'Mary Brown', 'Female', '23 Dec 1985', 44, False, 'NA', 'NA', 'NA'],
+        ['@I5@', 'Daniel Kim', 'Male', '23 Dec 1985', 23, False, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Samantha Kim', 'Female', '23 Dec 1985', 22, False, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'Mike Johnson', 'Male', '27 Nov 1989', 31, False, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Andrew Kim', 'Female', '27 Nov 1989', 48, False, '12 Dec 2021', '@F3@', '@F5@'],
+        ['@I9@', 'Jack Dance', 'Male', '27 Nov 1989', 32, False, 'NA', '@F5@', '@F1@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '27 Nov 1989', 32, False, 'NA', 'NA', 'NA']]
+
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I14@', 'Linda Chen', '@I37@'],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I33@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I1@', '@I2@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I3@', 'Erica Man', '@I19@', 'Karen Wu', 'NA']]
+
+        result = gedcom_functions.listMulBirt(ind_m, fam_m)
+        self.assertEqual(result, [['@I1@', '@I2@']])
+
+    def test5listMulBirt(self):
+        ind_m = [['@I1@', 'John Smith', 'Male', '22 Dec 1985', 3, False, 'NA', '@F5@', 'NA'],
+        ['@I2@', 'Jane Doe', 'Female', '23 Dec 1985', 29, False, 'NA', 'NA', 'I9'],
+        ['@I3@', 'Bob Johnson', 'Male', '22 Dec 1985', 42, False, '05 Jan 2022', '@F1@', '@I10'],
+        ['@I4@', 'Mary Brown', 'Female', '23 Dec 1985', 44, False, 'NA', 'NA', 'NA'],
+        ['@I5@', 'Daniel Kim', 'Male', '23 Dec 1985', 23, False, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Samantha Kim', 'Female', '23 Dec 1985', 22, False, 'NA', '@F2@', 'NA'],
+        ['@I7@', 'Mike Johnson', 'Male', '27 Nov 1989', 31, False, 'NA', 'NA', '@F1@'],
+        ['@I8@', 'Andrew Kim', 'Female', '24 Nov 1989', 48, False, '12 Dec 2021', '@F3@', '@F5@'],
+        ['@I9@', 'Jack Dance', 'Male', '24 Nov 1989', 32, False, 'NA', '@F5@', '@F1@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '27 Nov 1989', 32, False, 'NA', 'NA', 'NA']]
+
+        fam_m = [['@F1@', '18 Jan 2001', 'NA', '@I1@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA'],
+        ['@F2@', '10 Feb 1995', 'NA', '@I2@', 'Zac Mannor', '@I12@', 'Sarah Brown', '@I10@'],
+        ['@F3@', '07 Mar 2002', '15 Jul 2018', '@I3@', 'Michael Davis', '@I13@', 'Emily Green', '@I7@'],
+        ['@F4@', '02 Apr 2005', '12 Oct 2015', '@I4@', 'Robert Johnson', '@I14@', 'Linda Chen', ['@I7@', '@I8@', '@I9@', '@I10@']],
+        ['@F5@', '29 May 1998', 'NA', '@I5@', 'Daniel Kim', '@I15@', 'Cynthia Wong', 'NA'],
+        ['@F6@', '13 Jun 1997', 'NA', '@I6@', 'William Huang', '@I16@', 'Jessica Lin', 'NA'],
+        ['@F7@', '22 Jul 2009', 'NA', '@I7@', 'Richard Lee', '@I17@', 'Hannah Kim', 'NA'],
+        ['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I33@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', ['@I1@', '@I2@', '@I3@', '@I4@', '@I5@', '@I6@']],
+        ['@F10@', '30 Oct 2010', 'NA', '@I3@', 'Erica Man', '@I19@', 'Karen Wu', 'NA']]
+
+        result = gedcom_functions.listMulBirt(ind_m, fam_m)
+        self.assertEqual(result, [['@I7@', '@I10@'], ['@I8@', '@I9@'], ['@I1@', '@I3@'], ['@I2@', '@I4@', '@I5@', '@I6@']])
+
+    def test1_OP(self):
+        i_mat = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 35, True, '10 Feb 1990', '@F5@', '@F2@']]
+
+        f_mat = [['@F1@', '18 Jan 2070', 'NA', '@I2@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA']]
+
+        result = gedcom_functions.old_parents(f_mat, i_mat)
+        self.assertEqual(result, [])
+    def test2_OP(self):
+        i_mat = [['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I7@', 'Mike Davis', 'Male', '11 Sep 1990', 31, True, '10 Feb 1900', 'NA', '@F1@'],
+        ['@I8@', 'Karen Lee', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+        ['@I9@', 'Linda Chen', 'Female', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+
+        f_mat = [['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@F3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Andrew Kim', '@I20@', 'Michelle Park', 'NA']]
+
+        result = gedcom_functions.old_parents(f_mat, i_mat)
+        self.assertEqual(result, [])
+    def test3_OP(self):
+        i_mat = [['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Robert Johnson', 'Male', '17 Oct 1977', 44, False, '13 October 2015', 'NA', '@F4@'],
+        ['@I5@', 'David Lee', 'Male', '29 Apr 1998', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Jack Dance', 'Female', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I8@', 'Christopher Lee', 'Male', '11 Sep 1800', 31, True, '10 Feb 1900', 'NA', '@F1@'],
+        ['@I7@', 'Karen Lee', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+        ['@I9@', 'Linda Chen', 'Female', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+
+        f_mat = [['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Andrew Kim', '@I20@', 'Michelle Park', 'NA']]
+
+
+
+        result = gedcom_functions.old_parents(f_mat, i_mat)
+        self.assertEqual(result, [])
+    def test4_OP(self):
+        i_mat = [['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Robert Johnson', 'Male', '17 Oct 1977', 44, False, '13 October 2015', 'NA', '@F4@'],
+        ['@I5@', 'David Lee', 'Male', '29 Apr 1998', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Jack Dance', 'Female', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I8@', 'Christopher Lee', 'Male', '11 Sep 1800', 31, True, '10 Feb 1900', 'NA', '@F1@']]
+
+        f_mat = [['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Andrew Kim', '@I20@', 'Michelle Park', 'NA']]
+
+        result = gedcom_functions.old_parents(f_mat, i_mat)
+        self.assertEqual(result, [])
+    def test5_OP(self):
+        i_mat = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 35, True, '10 Feb 1990', '@F5@', '@F2@']]
+
+        f_mat = [['@F1@', '18 Jan 2070', 'NA', '@I2@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA']]
+
+        result = gedcom_functions.old_parents(f_mat, i_mat)
+        self.assertEqual(result, [])
+
+    ######
+
+    def test1_ss(self):
+        i_mat = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 35, True, '10 Feb 1990', '@F5@', '@F2@']]
+
+        f_mat = [['@F1@', '18 Jan 2070', 'NA', '@I2@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA']]
+
+        result = gedcom_functions.sib_spacing(f_mat, i_mat)
+        self.assertEqual(result, [])
+    def test2_ss(self):
+        i_mat = [['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Robert Johnson', 'Male', '17 Oct 1977', 44, False, '13 October 2015', 'NA', '@F4@'],
+        ['@I5@', 'David Lee', 'Male', '29 Apr 1998', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Jack Dance', 'Female', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I8@', 'Christopher Lee', 'Male', '11 Sep 1800', 31, True, '10 Feb 1900', 'NA', '@F1@']]
+
+        f_mat = [['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Andrew Kim', '@I20@', 'Michelle Park', 'NA']]
+
+        result = gedcom_functions.sib_spacing(f_mat, i_mat)
+        self.assertEqual(result, [])
+    def test3_ss(self):
+        i_mat = [['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Robert Johnson', 'Male', '17 Oct 1977', 44, False, '13 October 2015', 'NA', '@F4@'],
+        ['@I5@', 'David Lee', 'Male', '29 Apr 1998', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Jack Dance', 'Female', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I8@', 'Christopher Lee', 'Male', '11 Sep 1800', 31, True, '10 Feb 1900', 'NA', '@F1@'],
+        ['@I7@', 'Karen Lee', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', 'NA'],
+        ['@I9@', 'Linda Chen', 'Female', '27 Nov 1989', 32, True, 'NA', '@F5@', '@F4@'],
+        ['@I10@', 'Stephanie Wong', 'Female', '06 Feb 1960', 60, True, 'NA', '@F3@', '@F2@']]
+
+        f_mat = [['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I9@', 'Eric Chen', '@I19@', 'Karen Wu', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I10@', 'Andrew Kim', '@I20@', 'Michelle Park', 'NA']]
+
+
+
+        result = gedcom_functions.sib_spacing(f_mat, i_mat)
+        self.assertEqual(result, [])
+    def test4_ss(self):
+        i_mat = [['@I2@', 'Jane Doe', 'Female', '14 Aug 1992', 29, True, 'NA', 'NA', '@F3@'],
+        ['@I3@', 'Bob Johnson', 'Male', '02 Jun 1981', 42, False, '05 Jan 2022', '@F1@', '@F5@'],
+        ['@I4@', 'Robert Johnson', 'Male', '17 Oct 1977', 44, False, '13 October 2015', 'NA', '@F4@'],
+        ['@I5@', 'David Lee', 'Male', '29 Apr 1998', 3, True, 'NA', '@F4@', 'NA'],
+        ['@I6@', 'Jack Dance', 'Female', '12 Jul 2001', 22, True, '07 Jan 2020', '@F2@', '@F1'],
+        ['@I8@', 'Christopher Lee', 'Male', '11 Sep 1800', 31, True, '10 Feb 1900', 'NA', '@F1@']]
+
+        f_mat = [['@F8@', '08 Aug 1985', '21 Dec 2001', '@I8@', 'Christopher Lee', '@I18@', 'Samantha Wang', '@I3@'],
+        ['@F9@', '14 Sep 1976', '23 Nov 1999', '@I2@', 'Eric Chen', '@I3@', 'Karen Wu', '@F4@'],
+        ['@F10@', '30 Oct 2010', 'NA', '@I4@', 'Andrew Kim', '@I5@', 'Michelle Park', 'NA']] 
+
+        result = gedcom_functions.sib_spacing(f_mat, i_mat)
+        self.assertEqual(result, [])
+    def test5_ss(self):
+        i_mat = [['@I1@', 'John Smith', 'Male', '23 Dec 1985', 35, True, '10 Feb 1990', '@F5@', '@F2@']]
+
+        f_mat = [['@F1@', '18 Jan 2070', 'NA', '@I2@', 'Jack Dance', '@I11@', 'Jane Doe', 'NA']]
+
+        result = gedcom_functions.sib_spacing(f_mat, i_mat)
+        self.assertEqual(result, [])
+        
 # Enables us to call test file like python file.
 if __name__ == '__main__':
     unittest.main()

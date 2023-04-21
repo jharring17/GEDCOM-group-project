@@ -376,3 +376,17 @@ if result == []:
     print('There is no bigamy.')
 else:
     print(result)
+
+# uniqueID
+result = uniqueID(individual, family)
+if uniqueID(individual, family) == []:
+    print("All IDs are unique.")
+else:
+    print(result)
+
+# listRecentDeaths
+result = listRecentDeaths(individual)
+if result == []:
+    print("No one died recently.")
+else:
+    print(result)

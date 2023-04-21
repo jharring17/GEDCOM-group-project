@@ -647,3 +647,144 @@ def includePartialDates(ind_matrix, fam_matrix):
             divorce_date = divorce_date.strftime('%b %Y')
             r[2] = divorce_date
     return ind_matrix, fam_matrix
+
+# Unique IDs
+def uniqueID(indi_matrix, fam_matrix):
+    indi_id = []
+    fam_id = []
+    not_unique = []
+    # Populates the individualID list.
+    for row in indi_matrix:
+        indi_id.append(row[0])
+    # Checks if each value is unique.
+    for i in range(len(indi_id)):
+        for i1 in range(len(indi_id)):
+            if i != i1:
+                if indi_id[i] == indi_id[i1]:
+                  not_unique.append("Error: " + indi_id[i] + " is not a unique individual ID.")
+    # Populates the familyID list.
+    for row in fam_matrix:
+        fam_id.append(row[0])
+    # Checks if each value is unique.
+    for i in range(len(fam_id)):
+        for i1 in range(len(fam_id)):
+            if i != i1:
+                if fam_id[i] == fam_id[i1]:
+                  not_unique.append("Error: " + fam_id[i] + " is not a unique family ID.")
+    return not_unique
+
+# List all people in a GEDCOM file who were born in the last 30 days
+def listRecentDeaths(ind_matrix):
+    new_births = []
+    for row in ind_matrix:
+        if row[6] == 'NA':
+            pass
+        else:
+            birth = parser.parse(row[6])
+            #birth = datetime.strptime(row[6], '%d %m %Y')
+            current_datetime = datetime.now()
+            days_since_birth = (current_datetime - birth).days
+            # Not 100% sure if this is how you check the last 30 days
+            if days_since_birth < 31:
+                new_births.append(row[1])
+    return new_births
+
+# List Multiple Births
+# List all multiple births in a GEDCOM file
+# Multiple births - siblings born on same day
+# Returns a list of lists where each sublist is siblings born on the same day
+def listMulBirt(ind_matrix, fam_matrix):
+    family_bdays = {}
+    for fam in fam_matrix:
+        if fam[7] != 'NA':
+            fam_id = fam[0]
+            siblings = fam[7]
+            family_bdays[fam_id] = {}
+            for sib in siblings:
+                for person in ind_matrix:
+                    if person[0] == sib:
+                        bday = person[3]
+                        if bday not in family_bdays[fam_id]:
+                            family_bdays[fam_id][bday] = [sib]
+                        else:
+                            family_bdays[fam_id][bday].append(sib)
+    res = []
+    for fam_id, bdays in family_bdays.items():
+        for bday in bdays:
+            mems = bdays[bday]
+            if len(mems) > 1:
+                res.append(mems)
+    return res 
+
+# Multiple Births <= 5
+# No more than five siblings should be born at the same time
+# Multiple births - siblings born on same day
+# Returns false if over 5 multiple births, true if otherwise
+def less5Birt(ind_matrix, fam_matrix):
+    for row in fam_matrix:
+        siblings = row[7]
+        if row[7] != 'NA' and len(siblings) > 5:
+            birth_arr = [None] * len(siblings)
+            date_index = 0
+            for element in siblings:
+                for rower in ind_matrix:
+                    if element == rower[0]:
+                        birth_arr[date_index] = rower[3]
+                date_index += 1
+            counter = {}
+            for birthday in birth_arr:
+                if birthday in counter:
+                    counter[birthday] += 1
+                else:
+                    counter[birthday] = 1
+            for item, count in counter.items():
+                if count > 5:
+                    return False
+    return True
+
+# Checks that parents are not too old
+def old_parents(fam_matrix, ind_matrix):
+    arr = []
+    dates = []
+    for row in fam_matrix:
+        par1_id = row[4]
+        par2_id = row[6]
+        ##print (row[7])
+        for child in row[7]:
+            for rowr in ind_matrix:
+                print(child)
+                if child == rowr[0]:
+                    ind_name = rowr[1]
+                    b_date = parser.parse(rowr[3])
+                    print(b_date)
+                    dates[0] = b_date
+                if par1_id == rowr[0]:
+                    p1_bdate = parser.parse(rowr[3])
+                    print(p1_bdate)
+                    if p1_bdate - b_date > 80 or p2_bdate-b_date > 60:
+                        arr.append(ind_name + "has old parents.")
+                if par2_id == rowr[0]:
+                    p2_bdate = parser.parse(rowr[3])
+                    if p2_bdate-b_date > 60: 
+                        arr.append(ind_name + "has old parents.")
+    return arr
+                
+# Checks sibling age gaps 
+def sib_spacing(fam_matrix, ind_matrix):
+    arr = []
+    sibs = []
+    sibnames = []
+    for row in fam_matrix:
+        if len(row[7])>1:
+            for sib in row[7]:
+                for rowr in ind_matrix:
+                    if rowr[0]== sib:
+                        ind_name = rowr[1]
+                        b_date = parser.parse(rowr[3])
+                        for sibling in sibs:
+                            if abs(b_date - sibling) < 1 or abs(b_date - sibling)> 10:
+                                ind = sibs.index(sibling)
+                                arr.append(ind_name + "and " + sibnames[ind] + "have an unusual age gap")
+                            sibs.append(b_date)
+                            sibnames.append(ind_name)                        
+    return arr
